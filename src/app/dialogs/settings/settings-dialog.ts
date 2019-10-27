@@ -14,4 +14,8 @@ export class SettingsDialog {
     closeDialog(): void {
         this.dialogRef.close();
     }
+
+    showPos(pos: number): void {
+        this.dialogRef.close(pos);
+    }
 }

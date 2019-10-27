@@ -7,7 +7,8 @@ import {
   MatCardModule,
   MatGridListModule,
   MatSlideToggleModule,
-  MatDialogModule
+  MatDialogModule,
+  MatSnackBarModule
 } from '@angular/material';
 
 import {
@@ -31,7 +32,8 @@ import { EcoFabSpeedDialModule } from '@ecodev/fab-speed-dial';
     MdcCardModule,
     MatSlideToggleModule,
     MatDialogModule,
-    EcoFabSpeedDialModule
+    EcoFabSpeedDialModule,
+    MatSnackBarModule
   ],
 
   exports: [
@@ -46,7 +48,8 @@ import { EcoFabSpeedDialModule } from '@ecodev/fab-speed-dial';
     MdcCardModule,
     MatSlideToggleModule,
     MatDialogModule,
-    EcoFabSpeedDialModule
+    EcoFabSpeedDialModule,
+    MatSnackBarModule
   ],
 })
 export class MaterialModule { }

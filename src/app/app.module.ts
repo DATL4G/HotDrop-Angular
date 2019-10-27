@@ -1,5 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { AngularFireModule } from '@angular/fire';
+import { environmentStage } from '../environments/global';
+import { FirebaseModule } from './firebase.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,6 +13,7 @@ import { MaterialModule } from './material';
 import { DialogComponentsModule } from './dialogs/dialog-components';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MainSiteComponent } from './main-site/main-site.component';
+import { SnackbarComponentsModule } from './snackbars/snackbar-components';
 
 @NgModule({
   declarations: [
@@ -19,12 +23,16 @@ import { MainSiteComponent } from './main-site/main-site.component';
   ],
   imports: [
     BrowserModule,
+    AngularFireModule.initializeApp(environmentStage.firebase),
+
     AppRoutingModule,
     BrowserAnimationsModule,
     LayoutModule,
     MaterialModule,
     DialogComponentsModule,
     NgbModule,
+    FirebaseModule,
+    SnackbarComponentsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

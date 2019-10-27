@@ -1,12 +1,12 @@
-<h5 mat-dialog-title>Settings</h5>
+<h5 mat-dialog-title>Provider</h5>
 <div mat-dialog-content>
     <mat-nav-list>
-        <mat-list-item *ngFor="let option of options; let pos = index" (click)="showPos(pos)">
+        <mat-list-item *ngFor="let option of options; let pos = index" (click)="chooseProvider(pos)">
             {{ option }}
         </mat-list-item>
     </mat-nav-list>
 </div>
 <div mat-dialog-actions class="flex-box" style="justify-content: flex-end;">
     <div class="spacer"></div>
-    <button mat-button (click)="closeDialog()" color="primary">Close</button>
+    <button mat-button (click)="closeDialog()" color="primary">Cancel</button>
 </div>

@@ -1,19 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SettingsDialog } from './settings/settings-dialog';
-import { MatButtonModule, MatListModule } from '@angular/material';
+import { MatButtonModule, MatListModule, MatSnackBarModule } from '@angular/material';
+import { AccountSelectDialog } from './accountselect/accountselect-dialog';
 
 @NgModule({
     imports: [
         CommonModule,
         MatButtonModule,
-        MatListModule
+        MatListModule,
+        MatSnackBarModule
     ],
     declarations: [
-        SettingsDialog
+        SettingsDialog,
+        AccountSelectDialog
     ],
     entryComponents: [
-        SettingsDialog
+        SettingsDialog,
+        AccountSelectDialog
     ]
 })
 export class DialogComponentsModule{ }
