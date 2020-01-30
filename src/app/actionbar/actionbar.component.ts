@@ -4,8 +4,6 @@ import { Observable, from } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import * as $ from 'jquery';
 import { MatDialog, MatSnackBar } from '@angular/material';
-import { auth } from 'firebase/app';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { SettingsDialog } from '../dialogs/settings/settings-dialog';
 import * as global from '../../environments/global';
 import { AccountSelectDialog } from '../dialogs/accountselect/accountselect-dialog';
@@ -27,18 +25,11 @@ export class ActionbarComponent {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    public firebaseAuth: AngularFireAuth,
     public dialog: MatDialog,
     public snackbar: MatSnackBar
   ) { }
 
   ngOnInit() {
-    this.firebaseAuth.authState.pipe().subscribe(user => {
-      const snackbarRef = this.snackbar.openFromComponent(AuthWelcomeSnackbar, {
-        duration: global.snackbarDuration,
-        data: user
-      });
-    });
   }
 
   openSettings(): void {
@@ -50,22 +41,6 @@ export class ActionbarComponent {
     dialogRef.afterClosed().subscribe(result => {
       switch (result) {
         case 0:
-          this.openAccountSelect();
-          break;
-      }
-    });
-  }
-
-  openAccountSelect(): void {
-    const dialogRef = this.dialog.open(AccountSelectDialog, {
-      width: global.dialogWidth,
-      data: global.accountOptions
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      switch (result) {
-        case 0:
-          this.firebaseAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
           break;
       }
     });

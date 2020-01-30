@@ -1,8 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { AngularFireModule } from '@angular/fire';
 import { environmentStage } from '../environments/global';
-import { FirebaseModule } from './firebase.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,15 +21,12 @@ import { SnackbarComponentsModule } from './snackbars/snackbar-components';
   ],
   imports: [
     BrowserModule,
-    AngularFireModule.initializeApp(environmentStage.firebase),
-
     AppRoutingModule,
     BrowserAnimationsModule,
     LayoutModule,
     MaterialModule,
     DialogComponentsModule,
     NgbModule,
-    FirebaseModule,
     SnackbarComponentsModule
   ],
   providers: [],
