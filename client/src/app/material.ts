@@ -10,8 +10,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import {
-  MdcFormFieldModule,
-  MdcTextFieldModule,
   MdcCardModule,
 } from '@angular-mdc/web';
 
@@ -21,8 +19,6 @@ import {
     MatButtonModule,
     MatIconModule,
     MatListModule,
-    MdcFormFieldModule,
-    MdcTextFieldModule,
     MatCardModule,
     MatGridListModule,
     MdcCardModule,
@@ -36,8 +32,6 @@ import {
     MatButtonModule,
     MatIconModule,
     MatListModule,
-    MdcFormFieldModule,
-    MdcTextFieldModule,
     MatCardModule,
     MatGridListModule,
     MdcCardModule,
