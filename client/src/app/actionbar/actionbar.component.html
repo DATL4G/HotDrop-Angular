@@ -17,9 +17,9 @@
 <div class="max-size" style="position: absolute; z-index: 9;">
   <ng-content></ng-content>
 </div>
-<div class="max-size flex-box" style="position: absolute; align-items: flex-end; z-index: 10;">
+<div class="max-size flex-box" style="position: absolute; align-items: flex-end;">
   <div class="spacer"></div>
-  <button mat-fab aria-label="Download FAB" color="primary" [style.margin]="(isHandset$ | async) ? '16px' : '32px'">
+  <button mat-fab aria-label="Download FAB" color="primary" [style.margin]="(isHandset$ | async) ? '16px' : '32px'" style="z-index: 10;">
     <mat-icon>get_app</mat-icon>
   </button>
 </div>

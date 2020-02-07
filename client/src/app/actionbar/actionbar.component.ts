@@ -6,8 +6,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SettingsDialog } from '../dialogs/settings/settings-dialog';
 import * as global from '../../environments/global';
-import { AccountSelectDialog } from '../dialogs/accountselect/accountselect-dialog';
-import { AuthWelcomeSnackbar } from '../snackbars/auth-welcome/auth-welcome-snackbar';
 
 
 @Component({

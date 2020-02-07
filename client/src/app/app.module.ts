@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { environmentStage } from '../environments/global';
 import { ServerConnection } from '../p2p';
 
 import { AppRoutingModule } from './app-routing.module';
