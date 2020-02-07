@@ -1,0 +1,19 @@
+{
+  "name": "hotdropserver",
+  "version": "0.0.0",
+  "description": "WebSocket Server for HotDrop",
+  "main": "index.ts",
+  "author": "Jeff Retz (DatLag)",
+  "private": true,
+  "dependencies": {
+    "@types/uuid": "^3.4.7",
+    "@types/ws": "^7.2.1",
+    "uuid": "^3.4.0",
+    "ws": "^7.2.1"
+  },
+  "devDependencies": {
+    "ts-node": "^8.6.2",
+    "tslint": "^6.0.0",
+    "typescript": "^3.7.5"
+  }
+}

@@ -17,22 +17,9 @@
 <div class="max-size" style="position: absolute; z-index: 9;">
   <ng-content></ng-content>
 </div>
-<div class="max-size flex-box" style="position: absolute; align-items: flex-end;">
+<div class="max-size flex-box" style="position: absolute; align-items: flex-end; z-index: 10;">
   <div class="spacer"></div>
-  <eco-fab-speed-dial animationMode="fling" style="position: relative; z-index: 10;" [style.margin]="(isHandset$ | async) ? '16px' : '32px'">
-    <eco-fab-speed-dial-trigger spin="true">
-        <button mat-fab color="primary" class="spin90" (click)="changeIcon()">
-          <mat-icon id="cloud_main_fab">cloud</mat-icon>
-        </button>
-    </eco-fab-speed-dial-trigger>
-
-    <eco-fab-speed-dial-actions>
-        <button mat-mini-fab (click)="downloadAction()" color="primary">
-          <mat-icon>cloud_download</mat-icon>
-        </button>
-        <button mat-mini-fab (click)="uploadAction()" color="primary">
-          <mat-icon>cloud_upload</mat-icon>
-        </button>
-    </eco-fab-speed-dial-actions>
-</eco-fab-speed-dial>
+  <button mat-fab aria-label="Download FAB" color="primary" [style.margin]="(isHandset$ | async) ? '16px' : '32px'">
+    <mat-icon>get_app</mat-icon>
+  </button>
 </div>

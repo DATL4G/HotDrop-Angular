@@ -17,8 +17,6 @@ import {
   MdcCardModule,
 } from '@angular-mdc/web';
 
-import { EcoFabSpeedDialModule } from '@ecodev/fab-speed-dial';
-
 @NgModule({
   imports: [
     MatToolbarModule,
@@ -32,7 +30,6 @@ import { EcoFabSpeedDialModule } from '@ecodev/fab-speed-dial';
     MdcCardModule,
     MatSlideToggleModule,
     MatDialogModule,
-    EcoFabSpeedDialModule,
     MatSnackBarModule
   ],
 
@@ -48,7 +45,6 @@ import { EcoFabSpeedDialModule } from '@ecodev/fab-speed-dial';
     MdcCardModule,
     MatSlideToggleModule,
     MatDialogModule,
-    EcoFabSpeedDialModule,
     MatSnackBarModule
   ],
 })

@@ -2,7 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable, from } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import * as $ from 'jquery';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { SettingsDialog } from '../dialogs/settings/settings-dialog';
 import * as global from '../../environments/global';
@@ -29,9 +28,6 @@ export class ActionbarComponent {
     public snackbar: MatSnackBar
   ) { }
 
-  ngOnInit() {
-  }
-
   openSettings(): void {
     const dialogRef = this.dialog.open(SettingsDialog, {
       width: global.dialogWidth,
@@ -44,31 +40,6 @@ export class ActionbarComponent {
           break;
       }
     });
-  }
-
-  uploadAction(): void {
-    this.changeIcon();
-  }
-
-  downloadAction(): void {
-    this.changeIcon();
-  }
-
-  changeIcon(): void {
-    let mainFAB = $('#cloud_main_fab');
-    if (this.isCloud(mainFAB)) {
-      mainFAB.text('close');
-    } else {
-      mainFAB.text('cloud');
-    }
-  }
-
-  isCloud(mainFAB: JQuery): boolean {
-    if (mainFAB.text().trim() == 'cloud') {
-      return true;
-    } else {
-      return false;
-    }
   }
 
 }

@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { environmentStage } from '../environments/global';
+import { ServerConnection } from '../p2p';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -29,7 +30,11 @@ import { SnackbarComponentsModule } from './snackbars/snackbar-components';
     NgbModule,
     SnackbarComponentsModule
   ],
-  providers: [],
+  providers: [
+    { provide: ServerConnection, useValue: new ServerConnection() }
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor() { }
+}
