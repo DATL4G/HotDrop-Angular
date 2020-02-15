@@ -12,12 +12,14 @@ import { DialogComponentsModule } from './dialogs/dialog-components';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MainSiteComponent } from './main-site/main-site.component';
 import { SnackbarComponentsModule } from './snackbars/snackbar-components';
+import { DownloadSiteComponent } from './download-site/download-site.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ActionbarComponent,
-    MainSiteComponent
+    MainSiteComponent,
+    DownloadSiteComponent
   ],
   imports: [
     BrowserModule,
@@ -35,5 +37,17 @@ import { SnackbarComponentsModule } from './snackbars/snackbar-components';
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor() { }
+  constructor() {
+    this.registerServiceWorker();
+  }
+
+  private registerServiceWorker(): void {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('../service-worker.js')
+        .then((registration) =>
+          console.log(`Service Worker registration complete, scope: '${registration.scope}'`))
+        .catch((error) =>
+          console.log(`Service Worker registration failed with error: '${error}'`));
+    }
+  }
 }

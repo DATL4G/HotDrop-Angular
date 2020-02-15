@@ -23,4 +23,7 @@ $HotDrop-theme: mat-light-theme($HotDrop-primary, $HotDrop-accent, $HotDrop-warn
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
+
+$HotDrop-primary-color: mat-color($HotDrop-primary);
+
 @include angular-material-theme($HotDrop-theme);

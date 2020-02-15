@@ -51,7 +51,7 @@ export class ServerConnection {
     }
   }
 
-  private send(message): void {
+  public send(message): void {
     if (!this.isConnected()) { return; }
     this.socket.send(JSON.stringify(message));
   }
