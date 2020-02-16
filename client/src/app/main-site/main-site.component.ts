@@ -1,5 +1,4 @@
 import {Component, Injector, OnInit} from '@angular/core';
-import {ServerConnection} from "../../p2p";
 
 @Component({
   selector: 'app-main-site',
@@ -8,17 +7,9 @@ import {ServerConnection} from "../../p2p";
 })
 export class MainSiteComponent implements OnInit {
 
-  private serverConnection: ServerConnection;
-
-  constructor(private injector: Injector) {
-    this.serverConnection = this.injector.get(ServerConnection);
-  }
+  constructor() { }
 
   ngOnInit() {
-  }
-
-  connectServer(): void {
-    this.serverConnection.connect();
   }
 
 }

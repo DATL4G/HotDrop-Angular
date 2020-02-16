@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { ServerConnection } from '../p2p';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,13 +12,15 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MainSiteComponent } from './main-site/main-site.component';
 import { SnackbarComponentsModule } from './snackbars/snackbar-components';
 import { DownloadSiteComponent } from './download-site/download-site.component';
+import { InfoLayoutComponent } from './info-layout/info-layout.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ActionbarComponent,
     MainSiteComponent,
-    DownloadSiteComponent
+    DownloadSiteComponent,
+    InfoLayoutComponent
   ],
   imports: [
     BrowserModule,
@@ -31,23 +32,9 @@ import { DownloadSiteComponent } from './download-site/download-site.component';
     NgbModule,
     SnackbarComponentsModule
   ],
-  providers: [
-    { provide: ServerConnection, useValue: new ServerConnection() }
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor() {
-    this.registerServiceWorker();
-  }
-
-  private registerServiceWorker(): void {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('../service-worker.js')
-        .then((registration) =>
-          console.log(`Service Worker registration complete, scope: '${registration.scope}'`))
-        .catch((error) =>
-          console.log(`Service Worker registration failed with error: '${error}'`));
-    }
-  }
+  constructor() { }
 }

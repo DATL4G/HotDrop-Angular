@@ -1,5 +1,7 @@
-<app-actionbar>
-  <div class="max-size background-container">
+<app-actionbar style="position: absolute; z-index: 10;" class="max-size">
+  <div class="max-size">
       <router-outlet></router-outlet>
   </div>
 </app-actionbar>
+<div style="position: absolute; z-index: 9;" class="background-container max-size">
+</div>

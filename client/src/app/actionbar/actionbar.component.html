@@ -1,25 +1,43 @@
-<div class="max-size" style="position: absolute;">
-  <mat-toolbar class="mat-elevation-z3" color="primary" style="position: relative; z-index: 10; top: 0;">
-    <div class="spacer"></div>
-    <span><b>HotDrop</b></span>
-    <div class="spacer"></div>
-  </mat-toolbar>
-  <div class="flex-box" [style.margin-right]="(isHandset$ | async) ? '8px' : '16px'">
-    <div class="spacer"></div>
-    <button mat-icon-button aria-label="Settings" (click)="openSettings()" style="position: relative; z-index: 10;">
-      <mat-icon>tune</mat-icon>
-    </button>
-    <button mat-icon-button aria-label="Info" style="position: relative; z-index: 10;">
-      <mat-icon>info_outline</mat-icon>
-    </button>
+<div class="max-size">
+  <!-- top container fixed -->
+  <div class="max-width" style="position: fixed; top: 0; z-index: 15">
+    <mat-toolbar class="mat-elevation-z0" color="primary">
+      <div class="spacer"></div>
+      <span><b>HotDrop</b></span>
+      <div class="spacer"></div>
+    </mat-toolbar>
+    <div class="flex-box" [style.margin-right]="(isHandset$ | async) ? '16px' : '32px'">
+      <div class="spacer"></div>
+      <div id="settings">
+        <button mat-icon-button aria-label="Settings" (click)="openSettings()">
+          <mat-icon>tune</mat-icon>
+        </button>
+        <button (click)="openInfo()" mat-icon-button aria-label="Info">
+          <mat-icon>info_outline</mat-icon>
+        </button>
+      </div>
+      <div id="closer">
+        <button mat-icon-button aria-label="Settings" (click)="openInfo()">
+          <mat-icon style="color: white;">close</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- content container -->
+  <div class="max-size">
+    <div style="z-index: 10; align-items: center" class="max-size">
+      <div class="reveal-container max-size">
+        <div class="max-size">
+          <ng-content></ng-content>
+        </div>
+        <input type="checkbox" id="show" />
+        <div class="max-size reveal-info flex-box" style="align-items: center; justify-content: center;">
+          <app-info-layout></app-info-layout>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-<div class="max-size" style="position: absolute; z-index: 9;">
-  <ng-content></ng-content>
-</div>
-<div class="max-size flex-box" style="position: absolute; align-items: flex-end;">
-  <div class="spacer"></div>
-  <button mat-fab aria-label="Download FAB" color="primary" [style.margin]="(isHandset$ | async) ? '16px' : '32px'" style="z-index: 10;">
-    <mat-icon>get_app</mat-icon>
-  </button>
-</div>
+
