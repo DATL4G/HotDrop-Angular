@@ -13,6 +13,9 @@ import { MainSiteComponent } from './main-site/main-site.component';
 import { SnackbarComponentsModule } from './snackbars/snackbar-components';
 import { DownloadSiteComponent } from './download-site/download-site.component';
 import { InfoLayoutComponent } from './info-layout/info-layout.component';
+import { DeviceDetectorModule } from 'ngx-device-detector';
+import {Peer} from "./p2p/Peer";
+import {PeerData} from "./p2p/PeerData";
 
 @NgModule({
   declarations: [
@@ -30,9 +33,10 @@ import { InfoLayoutComponent } from './info-layout/info-layout.component';
     MaterialModule,
     DialogComponentsModule,
     NgbModule,
-    SnackbarComponentsModule
+    SnackbarComponentsModule,
+    DeviceDetectorModule.forRoot()
   ],
-  providers: [],
+  providers: [PeerData],
   bootstrap: [AppComponent]
 })
 export class AppModule {

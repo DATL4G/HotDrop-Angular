@@ -7,20 +7,25 @@ const p2pServer = P2P.Server;
 const io = SocketIO(server);
 
 const ioPeerMsg = 'peer-msg';
-const ioGoPrivate = 'go-private';
+const ioEnableWebRTC = 'enable-webrtc';
+const ioPingPeers = 'ping-peers';
+const port = 3241;
 
-server.listen(3241, function () {
-    console.log('Listening on 3241');
+server.listen(port, function () {
+    console.log('Server started on %s', port);
 });
 io.use(p2pServer);
 
 io.on('connection', function (socket) {
     socket.on(ioPeerMsg, function (data) {
-        console.log('Message from peer: %s', data);
         socket.broadcast.emit(ioPeerMsg, data);
     });
 
-    socket.on(ioGoPrivate, function (data) {
-        socket.broadcast.emit(ioGoPrivate, data);
+    socket.on(ioEnableWebRTC, function (data) {
+        socket.broadcast.emit(ioEnableWebRTC, data);
     });
+
+    socket.on(ioPingPeers, function (data) {
+        socket.broadcast.emit(ioPingPeers, data);
+    })
 });
