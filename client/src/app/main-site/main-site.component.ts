@@ -1,8 +1,11 @@
 import {Component, Injector, OnInit} from '@angular/core';
 import * as SocketIO from 'socket.io-client';
 import * as P2P from 'socket.io-p2p';
-import {Peer} from "../p2p/Peer";
 import {PeerData} from "../p2p/PeerData";
+import {GsapAnimationService} from "../gsap-animation.service";
+import {Observable} from "rxjs";
+import {Breakpoints, BreakpointObserver} from "@angular/cdk/layout";
+import {map, shareReplay} from "rxjs/operators";
 
 @Component({
   selector: 'app-main-site',
@@ -16,20 +19,34 @@ export class MainSiteComponent implements OnInit {
   private p2pSocket = new P2P(this.socket, this.opts);
   private ioPingPeers = 'ping-peers';
   private jsonPeerData: {};
+  private peerList: Array<{}>;
+  private searching: boolean = false;
 
-  constructor(peerData: PeerData) {
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+    .pipe(
+      map(result => result.matches),
+      shareReplay()
+    );
+
+  constructor(private breakpointObserver: BreakpointObserver, peerData: PeerData, private gsapAnimationService: GsapAnimationService) {
     this.jsonPeerData = peerData.get();
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   connect(): void {
     this.p2pSocket.on('peer-msg', function (data) {
       console.log(data);
     });
 
-    this.pingPeers();
+    if (!this.searching) {
+      this.pingPeers();
+      this.animateAllCircles();
+    } else {
+      this.stopAllCircles();
+    }
+
+    this.searching = !this.searching;
   }
 
   enableWebRTC(): void {
@@ -58,6 +75,26 @@ export class MainSiteComponent implements OnInit {
       peerData: this.jsonPeerData,
       requestPeers: requestEnabled
     });
+  }
+
+  private animateAllCircles() {
+    for (let i = 1; i <= 20; i++) {
+      this.animateCircle(i);
+    }
+  }
+
+  private stopAllCircles() {
+    for (let i = 1; i <= 20; i++) {
+      const circleId = '#circle' + i;
+      this.gsapAnimationService.stopFor(circleId);
+    }
+  }
+
+  private animateCircle(circleNum: number): void {
+    const circleId = '#circle' + circleNum;
+    const circleDefaultRadius = 65 + (circleNum-1)*150;
+    const circleNewRadius = 215 + (circleNum-1)*150;
+    this.gsapAnimationService.transformTo(circleId, circleDefaultRadius, circleNewRadius)
   }
 
 }

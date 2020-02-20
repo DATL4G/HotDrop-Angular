@@ -2,7 +2,6 @@ const CACHE_NAME: string = 'HotDrop-cache';
 let cacheURL: Array<string> = [
   '/',
   '/assets/css/noscript.css',
-  '/assets/images/circles.svg',
   '/assets/images/ic_launcher_round.png',
   '/p2p/events.js',
   '/p2p/index.js',
