@@ -2,7 +2,7 @@ import {Component, Injector, OnInit} from '@angular/core';
 import * as SocketIO from 'socket.io-client';
 import * as P2P from 'socket.io-p2p';
 import {PeerData} from "../p2p/PeerData";
-import {GsapAnimationService} from "../gsap-animation.service";
+import {GsapAnimationService} from "../animation/gsap-animation.service";
 import {Observable} from "rxjs";
 import {Breakpoints, BreakpointObserver} from "@angular/cdk/layout";
 import {map, shareReplay} from "rxjs/operators";
@@ -94,7 +94,7 @@ export class MainSiteComponent implements OnInit {
     const circleId = '#circle' + circleNum;
     const circleDefaultRadius = 65 + (circleNum-1)*150;
     const circleNewRadius = 215 + (circleNum-1)*150;
-    this.gsapAnimationService.transformTo(circleId, circleDefaultRadius, circleNewRadius)
+    this.gsapAnimationService.transformFromTo(circleId, circleDefaultRadius, circleNewRadius);
   }
 
 }
