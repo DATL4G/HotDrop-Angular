@@ -3,7 +3,6 @@ RUN apk add --update nodejs
 RUN apk add --update npm
 RUN npm install -g yarn
 RUN npm install -g typescript
-RUN npm install -g ts-node
 RUN mkdir /usr/share/nginx/build
 COPY ./client/ /usr/share/nginx/build
 WORKDIR /usr/share/nginx/build

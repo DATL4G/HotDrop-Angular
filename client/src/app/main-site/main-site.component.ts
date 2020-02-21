@@ -30,6 +30,7 @@ export class MainSiteComponent implements OnInit {
 
   constructor(private breakpointObserver: BreakpointObserver, peerData: PeerData, private gsapAnimationService: GsapAnimationService) {
     this.jsonPeerData = peerData.get();
+    this.discoveryListener();
   }
 
   ngOnInit() { }
@@ -40,9 +41,10 @@ export class MainSiteComponent implements OnInit {
     });
 
     if (!this.searching) {
-      this.pingPeers();
+      this.sendPeerData(true, true);
       this.animateAllCircles();
     } else {
+      this.sendPeerData(false, false);
       this.stopAllCircles();
     }
 
@@ -60,20 +62,22 @@ export class MainSiteComponent implements OnInit {
 
   pingPeers(): void {
     this.sendPeerData(true);
+  }
 
+  discoveryListener() {
     this.p2pSocket.on(this.ioPingPeers, (data) => {
       if (data.requestPeers) {
-        this.sendPeerData(false);
+        this.sendPeerData(false, true);
       }
       console.log(data);
     });
   }
 
-
-  sendPeerData(requestEnabled: boolean = false): void {
+  sendPeerData(requestEnabled: boolean = false, addToList: boolean = true): void {
     this.p2pSocket.emit(this.ioPingPeers, {
       peerData: this.jsonPeerData,
-      requestPeers: requestEnabled
+      requestPeers: requestEnabled,
+      addable: addToList
     });
   }
 
