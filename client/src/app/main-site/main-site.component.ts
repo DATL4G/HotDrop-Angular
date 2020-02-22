@@ -14,7 +14,7 @@ import {map, shareReplay} from "rxjs/operators";
 })
 export class MainSiteComponent implements OnInit {
 
-  private socket = SocketIO('http://localhost:3241/');
+  private socket = SocketIO(location.protocol+ '//' +location.hostname+ ':' +3241);
   private opts = { peerOpts: { trickle: false }, autoUpgrade: false, numClients: 20 };
   private p2pSocket = new P2P(this.socket, this.opts);
   private ioPingPeers = 'ping-peers';
