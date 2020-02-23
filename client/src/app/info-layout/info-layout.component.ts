@@ -5,6 +5,7 @@ import {map, shareReplay} from "rxjs/operators";
 import {MatDialog} from "@angular/material/dialog";
 import * as global from "../../environments/global";
 import {DependenciesDialog} from "../dialogs/dependencies/dependencies-dialog";
+import {AboutDialog} from "../dialogs/about/about-dialog";
 
 @Component({
   selector: 'app-info-layout',
@@ -26,7 +27,8 @@ export class InfoLayoutComponent implements OnInit {
   }
 
   openRepo(): void {
-
+    let win = window.open('https://github.com/DATL4G/HotDrop-Angular', '_blank');
+    win.focus();
   }
 
   openDep(): void {
@@ -43,8 +45,8 @@ export class InfoLayoutComponent implements OnInit {
     });
   }
 
-  openInfo():void {
-
+  openInfo(): void {
+    const dialogRef = this.dialog.open(AboutDialog);
   }
 
 }

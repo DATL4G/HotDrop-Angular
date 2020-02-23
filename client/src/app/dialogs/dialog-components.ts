@@ -6,6 +6,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DependenciesDialog } from "./dependencies/dependencies-dialog";
 import {AdBlockDialog} from "./adblock/adblock-dialog";
+import {AboutDialog} from "./about/about-dialog";
 
 @NgModule({
     imports: [
@@ -17,12 +18,14 @@ import {AdBlockDialog} from "./adblock/adblock-dialog";
     declarations: [
         SettingsDialog,
         DependenciesDialog,
-        AdBlockDialog
+        AdBlockDialog,
+        AboutDialog,
     ],
     entryComponents: [
         SettingsDialog,
         DependenciesDialog,
-        AdBlockDialog
+        AdBlockDialog,
+        AboutDialog,
     ]
 })
 export class DialogComponentsModule{ }
