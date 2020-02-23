@@ -10,12 +10,14 @@ function createWindow () {
     height: 600,
     webPreferences: {
       nodeIntegration: true
-    }
+    },
+    icon: path.join(__dirname, '/dist/assets/images/ic_launcher_round.png'),
+    backgroundColor: '#ffffff'
   });
 
   mainWindow.loadURL(
     url.format({
-      pathname: path.join(__dirname, `/dist/index.html`),
+      pathname: path.join(__dirname, '/dist/index.html'),
       protocol: "file:",
       slashes: true
     })
