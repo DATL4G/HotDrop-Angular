@@ -8,7 +8,6 @@ import { ActionbarComponent } from './actionbar/actionbar.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MaterialModule } from './material';
 import { DialogComponentsModule } from './dialogs/dialog-components';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MainSiteComponent } from './main-site/main-site.component';
 import { SnackbarComponentsModule } from './snackbars/snackbar-components';
 import { DownloadSiteComponent } from './download-site/download-site.component';
@@ -33,7 +32,6 @@ import { AdBlockDetector } from './anti-adblock/adblock-detector';
     LayoutModule,
     MaterialModule,
     DialogComponentsModule,
-    NgbModule,
     SnackbarComponentsModule,
     DeviceDetectorModule.forRoot()
   ],

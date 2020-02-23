@@ -7,14 +7,16 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DependenciesDialog } from "./dependencies/dependencies-dialog";
 import {AdBlockDialog} from "./adblock/adblock-dialog";
 import {AboutDialog} from "./about/about-dialog";
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
-    imports: [
-        CommonModule,
-        MatButtonModule,
-        MatListModule,
-        MatSnackBarModule
-    ],
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatListModule,
+    MatSnackBarModule,
+    MatDialogModule
+  ],
     declarations: [
         SettingsDialog,
         DependenciesDialog,
