@@ -9,10 +9,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
-import {
-  MdcCardModule,
-} from '@angular-mdc/web';
-
 @NgModule({
   imports: [
     MatToolbarModule,
@@ -21,7 +17,6 @@ import {
     MatListModule,
     MatCardModule,
     MatGridListModule,
-    MdcCardModule,
     MatSlideToggleModule,
     MatDialogModule,
     MatSnackBarModule
@@ -34,7 +29,6 @@ import {
     MatListModule,
     MatCardModule,
     MatGridListModule,
-    MdcCardModule,
     MatSlideToggleModule,
     MatDialogModule,
     MatSnackBarModule
