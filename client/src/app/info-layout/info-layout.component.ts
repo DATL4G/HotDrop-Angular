@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {Observable} from "rxjs";
 import {Breakpoints, BreakpointObserver} from "@angular/cdk/layout";
 import {map, shareReplay} from "rxjs/operators";
+import {MatDialog} from "@angular/material/dialog";
+import * as global from "../../environments/global";
+import {DependenciesDialog} from "../dialogs/dependencies/dependencies-dialog";
 
 @Component({
   selector: 'app-info-layout',
@@ -16,9 +19,32 @@ export class InfoLayoutComponent implements OnInit {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver) { }
+  constructor(private breakpointObserver: BreakpointObserver,
+              public dialog: MatDialog) { }
 
   ngOnInit(): void {
+  }
+
+  openRepo(): void {
+
+  }
+
+  openDep(): void {
+    const dialogRef = this.dialog.open(DependenciesDialog, {
+      width: global.dialogWidth,
+      data: global.dependencies
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result !== null) {
+        let win = window.open(global.dependencyLinks[result], '_blank');
+        win.focus();
+      }
+    });
+  }
+
+  openInfo():void {
+
   }
 
 }

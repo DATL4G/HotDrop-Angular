@@ -14,9 +14,9 @@ import { SnackbarComponentsModule } from './snackbars/snackbar-components';
 import { DownloadSiteComponent } from './download-site/download-site.component';
 import { InfoLayoutComponent } from './info-layout/info-layout.component';
 import { DeviceDetectorModule } from 'ngx-device-detector';
-import {Peer} from "./p2p/Peer";
 import {PeerData} from "./p2p/PeerData";
 import {GsapAnimationService} from "./animation/gsap-animation.service";
+import { AdBlockDetector } from './anti-adblock/adblock-detector';
 
 @NgModule({
   declarations: [
@@ -41,5 +41,8 @@ import {GsapAnimationService} from "./animation/gsap-animation.service";
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor() { }
+  constructor() {
+    const adBlockDetector = new AdBlockDetector();
+    adBlockDetector.init();
+  }
 }

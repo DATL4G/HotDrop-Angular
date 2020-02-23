@@ -66,3 +66,6 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
  * APPLICATION IMPORTS
  */
 import './buffer-fix';
+import 'core-js/es/string';
+import 'core-js/es/array';
+import 'core-js/es/map';

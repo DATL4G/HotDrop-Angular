@@ -4,7 +4,7 @@ import { SettingsDialog } from './settings/settings-dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { AccountSelectDialog } from './accountselect/accountselect-dialog';
+import { DependenciesDialog } from "./dependencies/dependencies-dialog";
 
 @NgModule({
     imports: [
@@ -15,11 +15,11 @@ import { AccountSelectDialog } from './accountselect/accountselect-dialog';
     ],
     declarations: [
         SettingsDialog,
-        AccountSelectDialog
+        DependenciesDialog
     ],
     entryComponents: [
         SettingsDialog,
-        AccountSelectDialog
+        DependenciesDialog
     ]
 })
 export class DialogComponentsModule{ }

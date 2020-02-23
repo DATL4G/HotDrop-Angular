@@ -1,11 +1,28 @@
+$icon-margin: 12px;
+$icon-color: #ffffff;
+
 .mat-icon-handset {
   font-size: 84px;
   width: 84px;
-  color: white;
+  color: $icon-color;
 }
 
 .mat-icon-desktop {
   font-size: 96px;
   width: 96px;
-  color: white;
+  color: $icon-color;
+}
+
+.mat-icon-row button {
+  margin-left: $icon-margin;
+  margin-right: $icon-margin;
+}
+
+.mat-icon-row mat-icon {
+  color: $icon-color;
+}
+
+.mat-icon-row i {
+  font-size: 24px;
+  color: $icon-color;
 }
