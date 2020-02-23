@@ -14,7 +14,7 @@ import {map, shareReplay} from "rxjs/operators";
 })
 export class MainSiteComponent implements OnInit {
 
-  private socket = SocketIO(location.protocol+ '//' +location.hostname+ ':' +3241);
+  private socket = SocketIO(this.getServerUri());
   private opts = { peerOpts: { trickle: false }, autoUpgrade: false, numClients: 20 };
   private p2pSocket = new P2P(this.socket, this.opts);
   private ioPingPeers = 'ping-peers';
@@ -99,6 +99,21 @@ export class MainSiteComponent implements OnInit {
     const circleDefaultRadius = 65 + (circleNum-1)*150;
     const circleNewRadius = 215 + (circleNum-1)*150;
     this.gsapAnimationService.transformFromTo(circleId, circleDefaultRadius, circleNewRadius);
+  }
+
+  private getServerUri(): string {
+    const port = 3241;
+    let protocol = location.protocol;
+    let host = location.hostname;
+
+    if(protocol.startsWith("file")) {
+      protocol = 'http:'
+    }
+    if(host === '' || host === null) {
+      host = 'localhost'
+    }
+
+    return protocol+ '//' +host+ ':' +port;
   }
 
 }

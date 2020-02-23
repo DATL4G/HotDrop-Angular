@@ -1,4 +1,4 @@
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, Menu} = require('electron');
 const url = require("url");
 const path = require("path");
 
@@ -22,6 +22,10 @@ function createWindow () {
   );
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
+  mainWindow.removeMenu();
+  mainWindow.setMenu(null);
+  mainWindow.setMenuBarVisibility(false);
+  Menu.setApplicationMenu(null);
 
   mainWindow.on('closed', function () {
     mainWindow = null
