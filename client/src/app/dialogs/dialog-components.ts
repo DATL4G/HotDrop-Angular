@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DependenciesDialog } from "./dependencies/dependencies-dialog";
+import {AdBlockDialog} from "./adblock/adblock-dialog";
 
 @NgModule({
     imports: [
@@ -15,11 +16,13 @@ import { DependenciesDialog } from "./dependencies/dependencies-dialog";
     ],
     declarations: [
         SettingsDialog,
-        DependenciesDialog
+        DependenciesDialog,
+        AdBlockDialog
     ],
     entryComponents: [
         SettingsDialog,
-        DependenciesDialog
+        DependenciesDialog,
+        AdBlockDialog
     ]
 })
 export class DialogComponentsModule{ }

@@ -37,12 +37,11 @@ import { AdBlockDetector } from './anti-adblock/adblock-detector';
     SnackbarComponentsModule,
     DeviceDetectorModule.forRoot()
   ],
-  providers: [PeerData, GsapAnimationService],
+  providers: [PeerData, GsapAnimationService, AdBlockDetector],
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor() {
-    const adBlockDetector = new AdBlockDetector();
+  constructor(adBlockDetector: AdBlockDetector) {
     adBlockDetector.init();
   }
 }

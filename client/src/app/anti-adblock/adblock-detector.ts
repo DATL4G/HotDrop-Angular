@@ -1,17 +1,22 @@
 import IBlockUBlock from "iblock-ublock";
+import {MatDialog} from "@angular/material/dialog";
+import {AdBlockDialog} from "../dialogs/adblock/adblock-dialog";
+import {Injectable} from "@angular/core";
 
+@Injectable({
+  providedIn: 'root'
+})
 export class AdBlockDetector {
 
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
 
   public init(): void {
+    let self = this;
     const iBlockUBlock = new IBlockUBlock({
       onDetected(): void {
-        console.log('Ads blocked');
+        self.dialog.open(AdBlockDialog);
       },
-      onNotDetected(): void {
-        console.log('Ads not blocked');
-      }
+      onNotDetected(): void { }
     });
 
     iBlockUBlock.run();
