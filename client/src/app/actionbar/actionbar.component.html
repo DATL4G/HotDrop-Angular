@@ -1,4 +1,6 @@
-<div class="max-size">
+<div class="max-width"
+     [style.margin-top]="(isHandset$ | async) ? '56px' : '64px'"
+     [style.height]="(isHandset$ | async) ? 'calc(100% - 56px)' : 'calc(100% - 64px)'">
   <!-- top container fixed -->
   <div class="max-width" style="position: fixed; top: 0; z-index: 15">
     <mat-toolbar class="mat-elevation-z0" color="primary">

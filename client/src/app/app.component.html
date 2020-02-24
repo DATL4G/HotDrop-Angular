@@ -3,8 +3,13 @@
       <router-outlet></router-outlet>
   </div>
 </app-actionbar>
-<div style="position: absolute; z-index: 9; overflow: hidden;" class="max-size">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2835 2835" class="max-size" [style.transform]="(isHandset$ | async) ? 'scale(2)' : 'scale(1.5)'">
+<div style="position: absolute; z-index: 9; overflow: hidden;"
+     class="max-width"
+     [style.margin-top]="(isHandset$ | async) ? '56px' : '64px'"
+     [style.height]="(isHandset$ | async) ? 'calc(100% - 56px)' : 'calc(100% - 64px)'">
+  <svg xmlns="http://www.w3.org/2000/svg"
+       viewBox="0 0 2835 2835"
+       class="max-size" [style.transform]="(isHandset$ | async) ? 'scale(2)' : 'scale(1.5)'">
     <title>circles</title>
     <circle id="circle1" class="cls-1" cx="1417.5" cy="1417.5" r="65" />
     <circle id="circle2" class="cls-1" cx="1417.5" cy="1417.5" r="215" />
