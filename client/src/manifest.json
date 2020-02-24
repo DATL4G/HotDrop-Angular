@@ -1,0 +1,17 @@
+{
+  "name": "HotDrop",
+  "version": "1.0",
+  "description": "Extension for HotDrop",
+  "manifest_version": 2,
+  "browser_action": {
+    "default_popup": "index.html",
+    "default_icon": "assets/images/icon128.png"
+  },
+  "icons": {
+    "16": "assets/images/icon16.png",
+    "32": "assets/images/icon32.png",
+    "48": "assets/images/icon48.png",
+    "64": "assets/images/icon64.png",
+    "128": "assets/images/icon128.png"
+  }
+}
