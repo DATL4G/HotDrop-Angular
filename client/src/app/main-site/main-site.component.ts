@@ -8,6 +8,7 @@ import {Breakpoints, BreakpointObserver} from "@angular/cdk/layout";
 import {map, shareReplay} from "rxjs/operators";
 import {DiscoveryPeerData} from "../p2p/DiscoveryPeerData";
 import * as $ from 'jquery';
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-main-site',
@@ -16,7 +17,7 @@ import * as $ from 'jquery';
 })
 export class MainSiteComponent implements OnInit {
 
-  private socket = SocketIO(this.getServerUri());
+  private socket = SocketIO(environment.serverUri+3241);
   private opts = { peerOpts: { trickle: false }, autoUpgrade: false, numClients: 20 };
   private p2pSocket = new P2P(this.socket, this.opts);
 
@@ -138,21 +139,6 @@ export class MainSiteComponent implements OnInit {
     const circleDefaultRadius = 65 + (circleNum-1)*150;
     const circleNewRadius = 215 + (circleNum-1)*150;
     this.gsapAnimationService.transformFromTo(circleId, circleDefaultRadius, circleNewRadius);
-  }
-
-  private getServerUri(): string {
-    const port = 3241;
-    let protocol = location.protocol;
-    let host = location.hostname;
-
-    if(protocol.startsWith("file")) {
-      protocol = 'http:'
-    }
-    if(host === '' || host === null) {
-      host = 'localhost'
-    }
-
-    return protocol+ '//' +host+ ':' +port;
   }
 
 }
