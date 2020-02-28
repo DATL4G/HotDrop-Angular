@@ -107,7 +107,17 @@ export class MainSiteComponent implements OnInit {
       }
     });
 
-    return responseCopy;
+    return this.squash(responseCopy);
+  }
+
+  private squash(arr) {
+    let tmp = [];
+    for(let i = 0; i < arr.length; i++){
+      if(tmp.indexOf(arr[i]) == -1){
+        tmp.push(arr[i]);
+      }
+    }
+    return tmp;
   }
 
   private animateAllCircles() {
