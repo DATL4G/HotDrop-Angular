@@ -16,6 +16,7 @@ export class PeerData extends Peer {
     this.deviceInfo = deviceService.getDeviceInfo();
     this.name = this.deviceInfo.os +'-'+ this.deviceInfo.browser;
     this.type = this.checkType(deviceService);
+    this.address = null;
   }
 
   public getDeviceService(): DeviceDetectorService {

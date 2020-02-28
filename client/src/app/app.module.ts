@@ -16,6 +16,7 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
 import {PeerData} from "./p2p/PeerData";
 import {GsapAnimationService} from "./animation/gsap-animation.service";
 import { AdBlockDetector } from './anti-adblock/adblock-detector';
+import { HostComponent } from './host/host.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { AdBlockDetector } from './anti-adblock/adblock-detector';
     ActionbarComponent,
     MainSiteComponent,
     DownloadSiteComponent,
-    InfoLayoutComponent
+    InfoLayoutComponent,
+    HostComponent
   ],
   imports: [
     BrowserModule,

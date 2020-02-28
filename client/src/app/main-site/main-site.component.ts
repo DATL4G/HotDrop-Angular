@@ -6,6 +6,8 @@ import {GsapAnimationService} from "../animation/gsap-animation.service";
 import {Observable} from "rxjs";
 import {Breakpoints, BreakpointObserver} from "@angular/cdk/layout";
 import {map, shareReplay} from "rxjs/operators";
+import {DiscoveryPeerData} from "../p2p/DiscoveryPeerData";
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-main-site',
@@ -17,9 +19,22 @@ export class MainSiteComponent implements OnInit {
   private socket = SocketIO(this.getServerUri());
   private opts = { peerOpts: { trickle: false }, autoUpgrade: false, numClients: 20 };
   private p2pSocket = new P2P(this.socket, this.opts);
-  private ioPingPeers = 'ping-peers';
-  private jsonPeerData: {};
-  private peerList: Array<{}>;
+
+  private ioPeerDataRequest = 'peer-data-request';
+  private ioPeerDataResponse = 'peer-data-response';
+  private ioPeerDataUpdate = 'peer-data-update';
+  private ioPeerListChanged = 'peer-list-changed';
+  private ioPeerListRequest = 'peer-list-request';
+  private ioPeerListResponse = 'peer-list-response';
+
+
+  private jsonPeerData: {
+    searching: boolean,
+    name: string,
+    type: number,
+    address?: string
+  } = null;
+  public peerList: Array<DiscoveryPeerData> = [];
   private searching: boolean = false;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -28,57 +43,71 @@ export class MainSiteComponent implements OnInit {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, peerData: PeerData, private gsapAnimationService: GsapAnimationService) {
-    this.jsonPeerData = peerData.get();
-    this.discoveryListener();
+  constructor(private breakpointObserver: BreakpointObserver, private peerData: PeerData, private gsapAnimationService: GsapAnimationService) {
+    this.p2pSocket.on(this.ioPeerDataRequest, () => {
+      this.p2pSocket.emit(this.ioPeerDataResponse, this.jsonPeerData);
+    });
   }
 
   ngOnInit() { }
 
   connect(): void {
-    this.p2pSocket.on('peer-msg', function (data) {
-      console.log(data);
-    });
+    this.searching = !this.searching;
+    this.updatePeerData(this.searching);
 
-    if (!this.searching) {
-      this.sendPeerData(true, true);
+    if (this.searching) {
+      this.attachDiscoveryListener();
+      this.p2pSocket.emit(this.ioPeerListRequest, null);
       this.animateAllCircles();
     } else {
-      this.sendPeerData(false, false);
       this.stopAllCircles();
+      this.detachDiscoveryListener();
     }
-
-    this.searching = !this.searching;
   }
 
-  enableWebRTC(): void {
-    const ioEnableWebRTC = 'enable-webrtc';
+  updatePeerData(searching: boolean) {
+    this.jsonPeerData = {
+      searching: searching,
+      name: this.peerData.getName(),
+      type: this.peerData.getType(),
+      address: this.peerData.getAddress()
+    };
 
-    this.p2pSocket.on(ioEnableWebRTC, () => {
-      this.p2pSocket.useSockets = false;
-    });
-    this.p2pSocket.emit(ioEnableWebRTC, true);
+    this.p2pSocket.emit(this.ioPeerDataUpdate, this.jsonPeerData);
   }
 
-  pingPeers(): void {
-    this.sendPeerData(true);
-  }
-
-  discoveryListener() {
-    this.p2pSocket.on(this.ioPingPeers, (data) => {
-      if (data.requestPeers) {
-        this.sendPeerData(false, true);
+  attachDiscoveryListener() {
+    this.p2pSocket.on(this.ioPeerListResponse, (responseData) => {
+      this.peerList = this.filterDiscoveryResponse(responseData);
+      if(this.peerList.length > 0) {
+        $('#searchFAB').hide();
+      } else {
+        $('#searchFAB').show();
       }
-      console.log(data);
+      console.clear();
+      console.log(this.peerList);
+    });
+
+    this.p2pSocket.on(this.ioPeerListChanged, () => {
+      this.p2pSocket.emit(this.ioPeerListRequest, null);
     });
   }
 
-  sendPeerData(requestEnabled: boolean = false, addToList: boolean = true): void {
-    this.p2pSocket.emit(this.ioPingPeers, {
-      peerData: this.jsonPeerData,
-      requestPeers: requestEnabled,
-      addable: addToList
+  detachDiscoveryListener() {
+    this.peerList = [];
+    this.p2pSocket.on(this.ioPeerListResponse, () => {});
+    this.p2pSocket.on(this.ioPeerListChanged, () => {});
+  }
+
+  filterDiscoveryResponse(responseData): Array<DiscoveryPeerData> {
+    const responseCopy: Array<DiscoveryPeerData> = Object.assign([], responseData);
+    responseCopy.forEach((value, index) => {
+      if(!value.data.searching || value.peerId === this.p2pSocket['peerId']) {
+        responseCopy.splice(index, 1);
+      }
     });
+
+    return responseCopy;
   }
 
   private animateAllCircles() {
