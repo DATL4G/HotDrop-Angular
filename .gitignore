@@ -5,6 +5,13 @@
 ## Angular ##
 # compiled output
 dist/
+client/dist
+dist.crx
+dist.pem
+dist.zip
+client/dist.crx
+client/dist.pem
+client/dist.zip
 tmp/
 app/**/*.js
 app/**/*.js.map
@@ -560,3 +567,5 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/node,linux,macos,windows,angular,netbeans,visualstudio,visualstudiocode
+
+src/environments/firebase-config.ts

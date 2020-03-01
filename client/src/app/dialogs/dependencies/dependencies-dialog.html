@@ -1,0 +1,12 @@
+<h5 mat-dialog-title>Dependencies</h5>
+<div mat-dialog-content>
+  <mat-nav-list>
+    <mat-list-item *ngFor="let option of options; let pos = index" (click)="showPos(pos)">
+      {{ option }}
+    </mat-list-item>
+  </mat-nav-list>
+</div>
+<div mat-dialog-actions class="flex-box" style="justify-content: flex-end;">
+  <div class="spacer"></div>
+  <button mat-button (click)="closeDialog()" color="primary">Okay</button>
+</div>

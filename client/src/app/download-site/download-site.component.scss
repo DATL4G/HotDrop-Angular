@@ -1,0 +1,24 @@
+@import "src/styles";
+
+.android-image {
+  background-image: url("src/assets/images/android_head.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+::ng-deep .mat-card-header{
+  background-color: $HotDrop-primary-color !important;
+  color: white !important;
+}
+
+::ng-deep .mat-card {
+  background-color: $HotDrop-primary-color !important;
+  color: white !important;
+}
+
+::ng-deep .mat-card-content{
+  background-color: $HotDrop-primary-color !important;
+  color: white !important;
+}

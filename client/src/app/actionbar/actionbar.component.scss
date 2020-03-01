@@ -1,0 +1,52 @@
+@import "src/assets/scss/theme";
+
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 200px;
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.reveal-container {
+  position: relative;
+}
+
+.reveal-container :not(reveal-info) {
+  position: absolute;
+}
+
+.reveal-info {
+  background-color: $HotDrop-primary-color;
+  transition: clip-path 0.5s ease-out;
+  z-index: 14;
+}
+
+input:checked ~ .reveal-info {
+  clip-path: circle(200% at 100% 0);
+}
+
+input:not(:checked) ~ .reveal-info {
+  clip-path: circle(0 at 100% 0);
+}
+
+input {
+  display: none;
+  visibility: hidden;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  left: -100%;
+  content: '';
+}

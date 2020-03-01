@@ -1,0 +1,96 @@
+<div class="max-size flex-box" style="align-items: center;">
+  <div class="spacer"></div>
+  <div class="row">
+    <div class="col-lg-6">
+      <div [style.margin]="(isHandset$ | async) ? '16px' : '32px'">
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar class="android-image"></div>
+            <mat-card-title>Android Devices</mat-card-title>
+            <mat-card-subtitle style="color: white !important;">Google Play</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              Get the native Android-App on Google Play! <br>
+              Faster, more secure and optimized for Android Devices. <br>
+              Working on any Android-Smartphone, Tablet and even AndroidTV.
+            </p>
+          </mat-card-content>
+          <mat-card-actions class="flex-box" style="justify-content: flex-end;">
+            <div class="spacer"></div>
+            <button mat-button>DOWNLOAD</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div [style.margin]="(isHandset$ | async) ? '16px' : '32px'">
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar class="android-image"></div>
+            <mat-card-title>Windows, Mac, Linux</mat-card-title>
+            <mat-card-subtitle style="color: white !important;">Java Application</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              Get the Java Application for any PC! <br>
+              Faster, more secure and optimized for Computers. <br>
+              Working on Mac, Windows and Linux.
+              (When having trouble using this Program, try the Electron-Variant)
+            </p>
+          </mat-card-content>
+          <mat-card-actions class="flex-box" style="justify-content: flex-end;">
+            <div class="spacer"></div>
+            <button mat-button>DOWNLOAD</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div [style.margin]="(isHandset$ | async) ? '16px' : '32px'">
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar class="android-image"></div>
+            <mat-card-title>Windows, Mac, Linux</mat-card-title>
+            <mat-card-subtitle style="color: white !important;">Electron Application</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              Get the Java Application for any PC! <br>
+              Faster, more secure and optimized for Computers. <br>
+              Working on Mac, Windows and Linux.
+              (When having trouble using this Program, try the Java-Variant)
+            </p>
+          </mat-card-content>
+          <mat-card-actions class="flex-box" style="justify-content: flex-end;">
+            <div class="spacer"></div>
+            <button mat-button>DOWNLOAD</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div [style.margin]="(isHandset$ | async) ? '16px' : '32px'">
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar class="android-image"></div>
+            <mat-card-title>iOS Devices</mat-card-title>
+            <mat-card-subtitle style="color: white !important;">Not Supported</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              This program is not supported for iOS Devices at the moment! <br>
+              In progress, stay tuned... <br>
+              However the Web-Version should work fine!
+            </p>
+          </mat-card-content>
+          <mat-card-actions class="flex-box" style="justify-content: flex-end;">
+            <div class="spacer"></div>
+            <button mat-button [disabled]="true">DOWNLOAD</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  <div class="spacer"></div>
+</div>
