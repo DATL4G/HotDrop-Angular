@@ -17,7 +17,7 @@ import {environment} from "../../environments/environment";
 })
 export class MainSiteComponent implements OnInit {
 
-  private socket = SocketIO(environment.serverUri+3241);
+  private socket = SocketIO(environment.serverUri+3241, { forceNew: true, reconnection: false });
   private opts = { peerOpts: { trickle: false }, autoUpgrade: false, numClients: 20 };
   private p2pSocket = new P2P(this.socket, this.opts);
 
@@ -44,7 +44,12 @@ export class MainSiteComponent implements OnInit {
       shareReplay()
     );
 
+  public col1ClassList = 'col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12';
+  public col2ClassList = 'col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6';
+  public col3ClassList = 'col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4';
+
   constructor(private breakpointObserver: BreakpointObserver, private peerData: PeerData, private gsapAnimationService: GsapAnimationService) {
+    $('#hostContent').hide();
     this.p2pSocket.on(this.ioPeerDataRequest, () => {
       this.p2pSocket.emit(this.ioPeerDataResponse, this.jsonPeerData);
     });
@@ -81,11 +86,14 @@ export class MainSiteComponent implements OnInit {
     this.p2pSocket.on(this.ioPeerListResponse, (responseData) => {
       this.peerList = this.filterDiscoveryResponse(responseData);
       if(this.peerList.length > 0) {
+        $('#hostContent').show();
         $('#searchFAB').hide();
       } else {
         $('#searchFAB').show();
+        $('#hostContent').hide();
       }
       console.clear();
+      console.log(responseData);
       console.log(this.peerList);
     });
 
@@ -101,14 +109,28 @@ export class MainSiteComponent implements OnInit {
   }
 
   filterDiscoveryResponse(responseData): Array<DiscoveryPeerData> {
-    const responseCopy: Array<DiscoveryPeerData> = Object.assign([], responseData);
+    const responseCopy: Array<DiscoveryPeerData> = Object.assign([], this.squash(responseData));
+    const removeDuplicates: Array<DiscoveryPeerData> = [];
+
     responseCopy.forEach((value, index) => {
+      let addToDuplicates: boolean = true;
+
       if(!value.data.searching || value.peerId === this.p2pSocket['peerId']) {
         responseCopy.splice(index, 1);
       }
+
+      removeDuplicates.forEach(duplicates => {
+        if(value.peerId === duplicates.peerId && addToDuplicates) {
+          addToDuplicates = false;
+        }
+      });
+
+      if (addToDuplicates) {
+        removeDuplicates.push(value);
+      }
     });
 
-    return this.squash(responseCopy);
+    return removeDuplicates;
   }
 
   private squash(arr) {

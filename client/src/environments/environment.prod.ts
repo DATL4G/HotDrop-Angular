@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  serverUri: 'http://localhost:'
+  serverUri: 'http://hotdrop.interaapps.de:'
 };
