@@ -92,9 +92,6 @@ export class MainSiteComponent implements OnInit {
         $('#searchFAB').show();
         $('#hostContent').hide();
       }
-      console.clear();
-      console.log(responseData);
-      console.log(this.peerList);
     });
 
     this.p2pSocket.on(this.ioPeerListChanged, () => {
