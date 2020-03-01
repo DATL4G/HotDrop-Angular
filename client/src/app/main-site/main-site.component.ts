@@ -1,4 +1,4 @@
-import {Component, Injector, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import * as SocketIO from 'socket.io-client';
 import * as P2P from 'socket.io-p2p';
 import {PeerData} from "../p2p/PeerData";
