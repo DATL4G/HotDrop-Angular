@@ -7,7 +7,7 @@ services:
     working_dir: /home/node/app
     command: ash -c "npm install && ts-node index.ts"
     ports:
-    - 3241:3241
+      - 3241:3241
   hotdrop_nginx:
     build:
       context: .
