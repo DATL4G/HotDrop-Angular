@@ -13,7 +13,6 @@ import { SnackbarComponentsModule } from './snackbars/snackbar-components';
 import { DownloadSiteComponent } from './download-site/download-site.component';
 import { InfoLayoutComponent } from './info-layout/info-layout.component';
 import { DeviceDetectorModule } from 'ngx-device-detector';
-import {PeerData} from "./p2p/PeerData";
 import {GsapAnimationService} from "./animation/gsap-animation.service";
 import { AdBlockDetector } from './anti-adblock/adblock-detector';
 import { HostComponent } from './host/host.component';
@@ -37,7 +36,7 @@ import { HostComponent } from './host/host.component';
     SnackbarComponentsModule,
     DeviceDetectorModule.forRoot()
   ],
-  providers: [PeerData, GsapAnimationService, AdBlockDetector],
+  providers: [GsapAnimationService, AdBlockDetector],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,126 +1,147 @@
-import { createServer } from 'http';
-import * as SocketIO from 'socket.io';
-import * as P2P from 'socket.io-p2p-server';
-import {Socket} from "socket.io";
-import {PeerData} from "./PeerData";
-import Timeout = NodeJS.Timeout;
+import * as WebSocket from 'ws';
+import { Peer } from "./Peer";
 
-const server = createServer();
-const p2pServer = P2P.Server;
-const io = SocketIO(server);
+export class HotDropServer {
 
-const ioPeerConnect = 'connection';
-const ioPeerDisconnect = 'disconnect';
+    private webSocketServer;
+    private rooms = {};
 
-const ioPeerDataRequest = 'peer-data-request';
-const ioPeerDataResponse = 'peer-data-response';
-const ioPeerDataUpdate = 'peer-data-update';
-const ioPeerListChanged = 'peer-list-changed';
-const ioPeerListRequest = 'peer-list-request';
-const ioPeerListResponse = 'peer-list-response';
-
-const port = 3241;
-
-const peerList: Array<Socket> = [];
-const peerData: Array<PeerData> = [];
-
-server.listen(port, function () {
-    console.log('Server started on %s', port);
-});
-io.use(p2pServer);
-
-let pingPeerInterval: Timeout = pingPeerIntervalSetup();
-
-io.on(ioPeerConnect, function (socket) {
-    peerList.push(socket);
-
-    socket.on(ioPeerDisconnect, function () {
-        const i = peerList.indexOf(socket);
-
-        for (let index = peerData.length -1; index >= 0; index--) {
-            if (peerData[index].peerListId === i) {
-                peerData.splice(index, 1);
-            }
-        }
-
-        peerList.splice(i, 1);
-    });
-    socket.emit(ioPeerDataRequest, null);
-
-    socket.on(ioPeerDataResponse, function (responseData) {
-        const i = peerList.indexOf(socket);
-        const peer = new PeerData();
-        peer.peerListId = i;
-        peer.data = responseData;
-        peer.peerId = socket.id;
-        peerData.push(peer);
-    });
-
-    socket.on(ioPeerDataUpdate, function (updateData) {
-        const i = peerList.indexOf(socket);
-
-        peerData.forEach((value, index) => {
-            if (value.peerListId === i) {
-                const peer = new PeerData();
-                peer.peerListId = i;
-                peer.data = updateData;
-                peer.peerId = socket.id;
-                peerData[index] = peer;
-            }
+    constructor(socketPort: number = 3241) {
+        this.webSocketServer = new WebSocket.Server({ port: socketPort });
+        this.webSocketServer.on('connection', (socket, request) => {
+            this.onConnection(new Peer(socket, request));
+        });
+        this.webSocketServer.on('headers', (headers, request) => {
+            this.onHeaders(headers, request);
         });
 
-        io.emit(ioPeerListChanged, null);
-        pingPeerInterval = pingPeerIntervalSetup();
-    });
+        console.log('Server started on %s', socketPort);
+    }
 
-    socket.on(ioPeerListRequest, function () {
-        socket.emit(ioPeerListResponse, filterPeerData(socket));
-    });
-});
+    onConnection(peer: Peer): void {
+        this.joinRoom(peer);
+        peer.getSocket().on('message', message => this.onMessage(peer, message));
+        this.keepAlive(peer);
+    }
 
-function filterPeerData(socket: Socket): Array<{}> {
-    const clonedArray: Array<PeerData> = Object.assign([], peerData);
-    for(let i = clonedArray.length -1; i >= 0; i--) {
-        if (clonedArray[i] !== null && clonedArray[i].data !== null) {
-            if (!clonedArray[i].data.searching || checkSameSocket(peerList[clonedArray[i].peerListId], socket)) {
-                clonedArray.splice(i, 1);
+    onHeaders(headers, response): void {
+        if (response.headers.cookie && response.headers.cookie.indexOf('peerid=') > -1) return;
+        response.peerId = Peer.uuid;
+        headers.push('Set-Cookie: peerid=' + response.peerId);
+    }
+
+    onMessage(sender: Peer, message): void {
+        try {
+            message = JSON.parse(message);
+        } catch (e) {
+            return;
+        }
+
+        switch (message.type) {
+            case 'disconnect':
+                this.leaveRoom(sender);
+                break;
+            case 'pong':
+                sender.lastBeat = Date.now();
+                break;
+        }
+
+        if (message.to && this.rooms[sender.getIP()]) {
+            const recipientId = message.to;
+            const recipient: Peer = this.rooms[sender.getIP()][recipientId];
+            delete message.to;
+
+            message.sender = sender.getId();
+            this.send(recipient, message);
+            return;
+        }
+    }
+
+    joinRoom(peer: Peer): void {
+        if (!this.rooms[peer.getIP()]) {
+            this.rooms[peer.getIP()] = {};
+        }
+
+        for (const otherPeerId in this.rooms[peer.getIP()]) {
+            if (this.rooms[peer.getIP()].hasOwnProperty(otherPeerId)) {
+                const otherPeer = this.rooms[peer.getIP()][otherPeerId];
+                this.send(otherPeer, {
+                    type: 'peer-joined',
+                    peer: peer.getInfo()
+                });
             }
+        }
+
+        const otherPeers = [];
+        for (const otherPeerId in this.rooms[peer.getIP()]) {
+            if (this.rooms[peer.getIP()].hasOwnProperty(otherPeerId)) {
+                otherPeers.push(this.rooms[peer.getIP()][otherPeerId].getInfo());
+            }
+        }
+
+        this.send(peer, {
+            type: 'peers',
+            peers: otherPeers
+        });
+
+        this.rooms[peer.getIP()][peer.getId()] = peer;
+    }
+
+    leaveRoom(peer: Peer): void {
+        if (!this.rooms[peer.getIP()] || !this.rooms[peer.getIP()][peer.getId()]) return;
+        this.cancelKeepAlive(this.rooms[peer.getIP()][peer.getId()]);
+
+        delete this.rooms[peer.getIP()][peer.getId()];
+
+        peer.getSocket().terminate();
+
+        if (Object.keys(this.rooms[peer.getIP()]).length) {
+            delete this.rooms[peer.getIP()];
         } else {
-            clonedArray.splice(i, 1);
+            for (const otherPeerId in this.rooms[peer.getIP()]) {
+                let otherPeer: Peer;
+                if (this.rooms[peer.getIP()].hasOwnProperty(otherPeerId)) {
+                    otherPeer = this.rooms[peer.getIP()][otherPeerId];
+                    this.send(otherPeer, {
+                        type: 'peer-left',
+                        peerId: peer.getId()
+                    });
+                }
+            }
         }
     }
 
-    return squash(clonedArray);
-}
+    send(peer: Peer, message): void {
+        if (!peer) return console.error('undefined peer');
+        if (this.webSocketServer.readyState !== this.webSocketServer.OPEN) return console.error('Socket is closed');
+        message = JSON.stringify(message);
+        peer.getSocket().send(message, err => err ? console.log(err) : '');
+    }
 
-function squash(arr){
-    let tmp = [];
-    for(let i = 0; i < arr.length; i++){
-        if(tmp.indexOf(arr[i]) == -1){
-            tmp.push(arr[i]);
+    keepAlive(peer: Peer): void {
+        this.cancelKeepAlive(peer);
+        let timeout = 10000;
+        if (!peer.lastBeat) {
+            peer.lastBeat = Date.now();
+        }
+
+        if (Date.now() - peer.lastBeat > 2 * timeout) {
+            this.leaveRoom(peer);
+            return
+        }
+
+        this.send(peer, {
+            type: 'ping'
+        });
+
+        peer.timerId = setTimeout(() => this.keepAlive(peer), timeout);
+    }
+
+    cancelKeepAlive(peer: Peer): void {
+        if (peer && peer.timerId) {
+            clearTimeout(peer.timerId);
         }
     }
-    return tmp;
 }
 
-function checkSameSocket(socket1: Socket, socket2: Socket): boolean {
-    if (socket1 !== undefined && socket2 !== undefined) {
-        if (socket1 === socket2) {
-            return true;
-        } else if (socket1.id === socket2.id) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-function pingPeerIntervalSetup(): Timeout {
-    if (pingPeerInterval !== null
-        && pingPeerInterval !== undefined) {
-        clearInterval(pingPeerInterval);
-    }
-    return  setInterval(function () {
-        io.emit(ioPeerListChanged, null);
-    }, 5000);
-}
+const server = new HotDropServer(parseInt(process.env.PORT) || 3241);

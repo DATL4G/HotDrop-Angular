@@ -1,8 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {DiscoveryPeerData} from "../p2p/DiscoveryPeerData";
 import {Observable} from "rxjs";
 import {Breakpoints, BreakpointObserver} from "@angular/cdk/layout";
 import {map, shareReplay} from "rxjs/operators";
+import {Host} from "../p2p/Host";
+const str2ab = require('string-to-arraybuffer')
 
 @Component({
   selector: 'app-host',
@@ -17,14 +18,26 @@ export class HostComponent implements OnInit {
       shareReplay()
     );
 
-  @Input() peerData: DiscoveryPeerData
+  @Input() peerData: Host
   constructor(private breakpointObserver: BreakpointObserver) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { }
+
+  public sendData(): void {
+    this.peerData.getPeer().send(str2ab('Hello from the other side'));
+  }
+
+  public getHostName(): string {
+    if (this.peerData.getData().model !== null
+      && this.peerData.getData().model !== undefined) {
+      return  this.peerData.getData().model;
+    } else {
+      return  this.peerData.getData().os +'-'+ this.peerData.getData().browser;
+    }
   }
 
   public getMatIconName(): string {
-    switch (this.peerData.data.type) {
+    switch (this.peerData.getData().type) {
       case 0:
         return 'watch';
       case 1:

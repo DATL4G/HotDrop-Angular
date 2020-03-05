@@ -1,26 +1,20 @@
+ const ab2str = require('arraybuffer-to-string')
+
 export abstract class Peer {
 
-  protected name: string;
-  protected type: number;
-  protected address: string = null;
+  protected server;
+  protected peerId;
 
-  public getName(): string {
-    return this.name;
+  abstract send(chunk: Uint8Array);
+
+  protected constructor(serverConnection, peerId) {
+    this.server = serverConnection;
+    this.peerId = peerId;
   }
 
-  public getType(): number {
-    return this.type;
+  onMessage(data) {
+    console.log('Data: ' + data);
+    console.log(ab2str(data));
   }
 
-  public getAddress(): string {
-    return this.address;
-  }
-
-  get(): {} {
-    return {
-      name: this.name,
-      type: this.type,
-      address: this.address
-    }
-  }
 }

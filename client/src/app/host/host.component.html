@@ -1,14 +1,14 @@
 <div style="margin: 8px;">
   <div class="max-width flex-box">
     <div class="spacer"></div>
-    <button mat-fab aria-label="Host FAB" color="primary">
+    <button (click)="sendData()" mat-fab aria-label="Host FAB" color="primary">
       <mat-icon>{{ getMatIconName() }}</mat-icon>
     </button>
     <div class="spacer"></div>
   </div>
   <div class="max-width flex-box">
     <div class="spacer"></div>
-    <p>{{ peerData.data.name }}</p>
+    <p>{{ getHostName() }}</p>
     <div class="spacer"></div>
   </div>
 </div>
