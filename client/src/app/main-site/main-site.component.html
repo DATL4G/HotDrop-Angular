@@ -3,10 +3,10 @@
   <button (click)="connect()" mat-fab aria-label="Search FAB" color="primary" id="searchFAB">
     <mat-icon>search</mat-icon>
   </button>
-  <div class="row" id="hostContent" style="display: none; margin-left: 0 !important; margin-right: 0 !important;">
-    <div *ngFor="let host of peerList; index as i">
-      <div [ngClass]="(i%3 === 1) ? col3ClassList : ((i%3 === 2) ? col2ClassList : col1ClassList)">
-        <app-host [peerData]="host"></app-host>
+  <div class="row" id="hostContent" style="display: none;">
+    <div *ngFor="let mapping of peerMapping">
+      <div [ngClass]="mapping.column">
+        <app-host [peerData]="mapping.peer" class="max-width"></app-host>
       </div>
     </div>
   </div>

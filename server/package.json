@@ -8,7 +8,7 @@
     "@types/uuidv4": "^5.0.0",
     "@types/ws": "^7.2.2",
     "ua-parser-js": "^0.7.21",
-    "uuidv4": "^6.0.5",
+    "uuidv4": "^6.0.6",
     "ws": "^7.2.1"
   },
   "devDependencies": {

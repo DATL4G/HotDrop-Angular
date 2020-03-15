@@ -5,7 +5,7 @@ export abstract class Peer {
   protected server;
   protected peerId;
 
-  abstract send(chunk: Uint8Array);
+  abstract send(chunk);
 
   protected constructor(serverConnection, peerId) {
     this.server = serverConnection;

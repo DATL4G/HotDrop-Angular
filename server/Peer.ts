@@ -1,5 +1,4 @@
 import { UAParser } from "ua-parser-js";
-import { uuid } from 'uuidv4';
 import * as WebSocket from 'ws';
 
 export class Peer {
@@ -14,7 +13,7 @@ export class Peer {
     };
     private id: string;
     private ip: string;
-    private rtcSupported: boolean = false;
+    private readonly rtcSupported: boolean = false;
 
     public timerId;
     public lastBeat: number;
@@ -92,9 +91,5 @@ export class Peer {
             data: this.data,
             rtcSupported: this.rtcSupported
         }
-    }
-
-    public static uuid(): string {
-        return uuid();
     }
 }

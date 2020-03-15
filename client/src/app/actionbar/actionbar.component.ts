@@ -1,13 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable, from } from 'rxjs';
-import { map, shareReplay, delay } from 'rxjs/operators';
+import {Component} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SettingsDialog } from '../dialogs/settings/settings-dialog';
 import * as global from '../../environments/global';
 import * as $ from 'jquery';
-
+import {BreakpointObserver} from "@angular/cdk/layout";
 
 @Component({
   selector: 'app-actionbar',
@@ -16,19 +13,16 @@ import * as $ from 'jquery';
 })
 export class ActionbarComponent {
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches),
-      shareReplay()
-    );
-
   checked = false;
+  globals: global.Globals;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     public dialog: MatDialog,
     public snackbar: MatSnackBar
   ) {
+    this.globals = new global.Globals(breakpointObserver);
+
     $('#show').prop('checked', this.checked);
     $(function () {
       $('#closer').hide();

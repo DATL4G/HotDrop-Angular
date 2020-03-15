@@ -8,6 +8,14 @@ services:
     command: ash -c "npm install && ts-node index.ts"
     ports:
       - "3241:3241"
+  hotdrop_coturn:
+    image: instrumentisto/coturn
+    command:
+      - -c=/etc/coturn/turnserver.conf
+      - --external-ip=$$(detect-external-ip)
+    volumes:
+      - ./coturn/turnserver.conf:/etc/coturn/turnserver.conf:ro
+    network_mode: host
   hotdrop_nginx:
     build:
       context: .

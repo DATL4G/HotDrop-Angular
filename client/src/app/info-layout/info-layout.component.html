@@ -1,14 +1,14 @@
 <div class="max-size flex-box" style="align-items: center;">
   <div class="spacer"></div>
     <div>
-      <mat-icon [class]="(isHandset$ | async) ? 'mat-icon-handset' : 'mat-icon-desktop'">screen_share</mat-icon>
+      <mat-icon [class]="(globals.isHandset()) ? 'mat-icon-handset' : 'mat-icon-desktop'">screen_share</mat-icon>
     </div>
   <div class="spacer"></div>
 </div>
 <div>
   <p style="color: white; text-align: center;"
-     [style.margin-left]="(isHandset$ | async) ? '32px' : '16px'"
-     [style.margin-right]="(isHandset$ | async) ? '32px' : '16px'">Easily send files and folders from one device to another.</p>
+     [style.margin-left]="(globals.isHandset()) ? '32px' : '16px'"
+     [style.margin-right]="(globals.isHandset()) ? '32px' : '16px'">Easily send files and folders from one device to another.</p>
   <div class="max-width flex-box mat-icon-row" style="align-items: center; justify-content: center;">
     <button (click)="openRepo()" mat-icon-button aria-label="GitHub Repo">
       <i class="fab fa-github"></i>

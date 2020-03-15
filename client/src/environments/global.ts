@@ -1,8 +1,11 @@
-import * as staging from './environment';
+import {Breakpoints, BreakpointObserver} from "@angular/cdk/layout";
+import {map, shareReplay} from "rxjs/operators";
+import {Observable} from "rxjs";
 
-export const environmentStage = staging.environment;
 export const dialogWidth: string = '300px';
 export const snackbarDuration: number = 3000;
+export const actionBarHeightDesktop: string = '64px';
+export const actionBarHeightMobile: string = '56px';
 
 export const settingsOptions: Array<String> = [
     'Connectivity',
@@ -26,3 +29,26 @@ export const dependencyLinks: Array<string> = [
     'https://socket.io',
     'https://koderlabs.github.io/ngx-device-detector/',
 ];
+
+export class Globals {
+
+  private handset$ = this.breakpointObserver.observe(Breakpoints.Handset)
+    .pipe(
+      map(result => result.matches),
+      shareReplay()
+    );
+
+  private handset: boolean = false;
+
+  constructor(private breakpointObserver: BreakpointObserver) {
+    this.handset$.subscribe(event => this.handset = event);
+  }
+
+  public isHandset(): boolean {
+    return this.handset;
+  }
+
+  public getHandset(): Observable<boolean> {
+    return this.handset$;
+  }
+}

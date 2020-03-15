@@ -1,6 +1,6 @@
 <div class="max-width"
-     [style.margin-top]="(isHandset$ | async) ? '56px' : '64px'"
-     [style.height]="(isHandset$ | async) ? 'calc(100% - 56px)' : 'calc(100% - 64px)'">
+     [style.margin-top]="(globals.isHandset()) ? '56px' : '64px'"
+     [style.height]="(globals.isHandset()) ? 'calc(100% - 56px)' : 'calc(100% - 64px)'">
   <!-- top container fixed -->
   <div class="max-width" style="position: fixed; top: 0; z-index: 15">
     <mat-toolbar class="mat-elevation-z0" color="primary">
@@ -8,7 +8,7 @@
       <span><b>HotDrop</b></span>
       <div class="spacer"></div>
     </mat-toolbar>
-    <div class="flex-box" [style.margin-right]="(isHandset$ | async) ? '16px' : '32px'">
+    <div class="flex-box" [style.margin-right]="(globals.isHandset()) ? '16px' : '32px'">
       <div class="spacer"></div>
       <div id="settings">
         <button mat-icon-button aria-label="Settings" (click)="openSettings()">

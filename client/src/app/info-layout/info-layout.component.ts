@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Observable} from "rxjs";
-import {Breakpoints, BreakpointObserver} from "@angular/cdk/layout";
-import {map, shareReplay} from "rxjs/operators";
+import {BreakpointObserver} from "@angular/cdk/layout";
 import {MatDialog} from "@angular/material/dialog";
 import * as global from "../../environments/global";
 import {DependenciesDialog} from "../dialogs/dependencies/dependencies-dialog";
@@ -14,14 +12,14 @@ import {AboutDialog} from "../dialogs/about/about-dialog";
 })
 export class InfoLayoutComponent implements OnInit {
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches),
-      shareReplay()
-    );
+  globals: global.Globals;
 
   constructor(private breakpointObserver: BreakpointObserver,
-              public dialog: MatDialog) { }
+              public dialog: MatDialog) {
+
+    this.globals = new global.Globals(breakpointObserver);
+
+  }
 
   ngOnInit(): void {
   }

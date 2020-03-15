@@ -58,7 +58,7 @@ export class Host {
     return this.peer;
   }
 
-  public send(byteArray: Uint8Array): void {
+  public send(byteArray: ArrayBuffer): void {
     this.peer.send(byteArray);
   }
 }

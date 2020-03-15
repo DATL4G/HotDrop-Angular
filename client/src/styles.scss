@@ -22,7 +22,6 @@ html, body {
 }
 
 body {
-  margin: 0;
   font-family: 'Poppins', "Helvetica Neue", sans-serif;
 }
 
@@ -45,4 +44,10 @@ body {
 
 .max-height {
   height: 100%;
+}
+
+.single-line {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }

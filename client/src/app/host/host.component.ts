@@ -1,7 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Observable} from "rxjs";
-import {Breakpoints, BreakpointObserver} from "@angular/cdk/layout";
-import {map, shareReplay} from "rxjs/operators";
 import {Host} from "../p2p/Host";
 const str2ab = require('string-to-arraybuffer')
 
@@ -12,19 +9,13 @@ const str2ab = require('string-to-arraybuffer')
 })
 export class HostComponent implements OnInit {
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches),
-      shareReplay()
-    );
-
   @Input() peerData: Host
-  constructor(private breakpointObserver: BreakpointObserver) { }
+  constructor() { }
 
   ngOnInit(): void { }
 
   public sendData(): void {
-    this.peerData.getPeer().send(str2ab('Hello from the other side'));
+    this.peerData.getPeer().send(JSON.stringify({ type: 'text', text: 'Hello from the other Site' }));
   }
 
   public getHostName(): string {

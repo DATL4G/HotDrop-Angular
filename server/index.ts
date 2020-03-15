@@ -1,5 +1,6 @@
 import * as WebSocket from 'ws';
 import { Peer } from "./Peer";
+import { uuid } from 'uuidv4';
 
 export class HotDropServer {
 
@@ -26,7 +27,7 @@ export class HotDropServer {
 
     onHeaders(headers, response): void {
         if (response.headers.cookie && response.headers.cookie.indexOf('peerid=') > -1) return;
-        response.peerId = Peer.uuid;
+        response.peerId = uuid();
         headers.push('Set-Cookie: peerid=' + response.peerId);
     }
 
