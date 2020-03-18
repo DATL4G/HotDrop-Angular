@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { AuthWelcomeSnackbar } from './auth-welcome/auth-welcome-snackbar';
+import { SocketConnectSnackbar } from './socket-connect/socket-connect-snackbar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
@@ -10,10 +10,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
         MatSnackBarModule
     ],
     declarations: [
-        AuthWelcomeSnackbar
+        SocketConnectSnackbar
     ],
     entryComponents: [
-        AuthWelcomeSnackbar
+        SocketConnectSnackbar
     ]
 })
 export class SnackbarComponentsModule { }

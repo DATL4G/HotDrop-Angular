@@ -4,10 +4,11 @@
     <mat-icon>search</mat-icon>
   </button>
   <div class="row" id="hostContent" style="display: none;">
-    <div *ngFor="let mapping of peerMapping">
-      <div [ngClass]="mapping.column">
-        <app-host [peerData]="mapping.peer" class="max-width"></app-host>
-      </div>
+    <div *ngFor="let mapping of peerMapping"
+         [ngClass]="mapping.column"
+         class="flex-box"
+         style="justify-content: center;">
+      <app-host [peerData]="mapping.peer" [discovery]="discovery" class="max-width"></app-host>
     </div>
   </div>
   <div class="spacer"></div>

@@ -1,6 +1,6 @@
 <div class="max-width"
-     [style.margin-top]="(globals.isHandset()) ? '56px' : '64px'"
-     [style.height]="(globals.isHandset()) ? 'calc(100% - 56px)' : 'calc(100% - 64px)'">
+     [style.margin-top]="globals.getActionBarHeight()"
+     [style.height]="'calc(100% - '+ globals.getActionBarHeight() + ')'">
   <!-- top container fixed -->
   <div class="max-width" style="position: fixed; top: 0; z-index: 15">
     <mat-toolbar class="mat-elevation-z0" color="primary">
@@ -8,14 +8,14 @@
       <span><b>HotDrop</b></span>
       <div class="spacer"></div>
     </mat-toolbar>
-    <div class="flex-box" [style.margin-right]="(globals.isHandset()) ? '16px' : '32px'">
+    <div class="flex-box" [style.margin-right]="globals.getSideMargin()">
       <div class="spacer"></div>
       <div id="settings">
         <button mat-icon-button aria-label="Settings" (click)="openSettings()">
-          <mat-icon>tune</mat-icon>
+          <mat-icon class="settings-icon">tune</mat-icon>
         </button>
         <button (click)="openInfo()" mat-icon-button aria-label="Info">
-          <mat-icon>info_outline</mat-icon>
+          <mat-icon class="settings-icon">info_outline</mat-icon>
         </button>
       </div>
       <div id="closer">

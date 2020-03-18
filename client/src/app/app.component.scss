@@ -1,6 +1,20 @@
+.app-background {
+  background-color: #ffffff;
+}
+
 .cls-1 {
-  fill:none;
+  fill: none;
   stroke: #f5f5f5;
-  stroke-miterlimit:10;
-  stroke-width:5px;
+  stroke-miterlimit: 10;
+  stroke-width: 5px;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  .app-background {
+    background-color: #000000;
+  }
+
+  .cls-1 {
+    stroke: #3F3F3F;
+  }
 }

@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Host} from "../p2p/Host";
+import {Discovery} from "../p2p/Discovery";
 const str2ab = require('string-to-arraybuffer')
 
 @Component({
@@ -9,13 +10,15 @@ const str2ab = require('string-to-arraybuffer')
 })
 export class HostComponent implements OnInit {
 
-  @Input() peerData: Host
+  @Input() peerData: Host;
+  @Input() discovery: Discovery;
   constructor() { }
 
   ngOnInit(): void { }
 
   public sendData(): void {
-    this.peerData.getPeer().send(JSON.stringify({ type: 'text', text: 'Hello from the other Site' }));
+    console.log('sending data');
+    this.peerData.send(str2ab('Test'), this.discovery);
   }
 
   public getHostName(): string {

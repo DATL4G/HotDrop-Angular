@@ -27,9 +27,13 @@
 }
 
 .reveal-info {
-  background-color: $HotDrop-primary-color;
+  background-color: $HotDrop-default-color;
   transition: clip-path 0.5s ease-out;
   z-index: 14;
+}
+
+.settings-icon {
+  color: #000000;
 }
 
 input:checked ~ .reveal-info {
@@ -49,4 +53,10 @@ input {
   bottom: 0;
   left: -100%;
   content: '';
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  .settings-icon {
+    color: #ffffff;
+  }
 }

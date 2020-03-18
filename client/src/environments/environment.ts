@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   protocol: 'http',
-  serverUri: 'localhost:8080',
+  serverUri: 'linux-datlag:8080',
   rtcConfig: {
     iceServers: [{
       urls: [

@@ -3,16 +3,17 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
-    "@types/node": "^13.7.1",
+    "@types/node": "^13.9.1",
+    "@types/socket.io": "^2.1.4",
     "@types/ua-parser-js": "^0.7.33",
     "@types/uuidv4": "^5.0.0",
-    "@types/ws": "^7.2.2",
+    "socket.io": "^2.3.0",
+    "socket.io-p2p-server": "^1.2.0",
     "ua-parser-js": "^0.7.21",
-    "uuidv4": "^6.0.6",
-    "ws": "^7.2.1"
+    "uuidv4": "^6.0.6"
   },
   "devDependencies": {
     "ts-node": "^8.6.2",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8.3"
   }
 }

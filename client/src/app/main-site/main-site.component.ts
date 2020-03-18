@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {GsapAnimationService} from "../animation/gsap-animation.service";
 import {BreakpointObserver} from "@angular/cdk/layout";
 import * as global from '../../environments/global';
 import * as $ from 'jquery';
-import {PeerDiscovery} from "../p2p/PeerDiscovery";
 import {Host} from "../p2p/Host";
+import {Discovery} from "../p2p/Discovery";
+import {SocketConnectSnackbar} from "../snackbars/socket-connect/socket-connect-snackbar";
 
 @Component({
   selector: 'app-main-site',
@@ -14,7 +16,6 @@ import {Host} from "../p2p/Host";
 export class MainSiteComponent implements OnInit {
 
   private searching: boolean = false;
-  private peerDiscovery: PeerDiscovery;
   private peerList: Array<Host> = [];
   private peerColumn: Array<string> = [];
   public peerMapping: Array<{
@@ -22,24 +23,45 @@ export class MainSiteComponent implements OnInit {
     column: string
   }> = [];
   public globals: global.Globals;
+  public discovery: Discovery;
 
   public col1ClassList = 'col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12';
   public col2ClassList = 'col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6';
   public col3ClassList = 'col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4';
 
-  constructor(private breakpointObserver: BreakpointObserver, private gsapAnimationService: GsapAnimationService) {
+
+  constructor(private breakpointObserver: BreakpointObserver,
+              private gsapAnimationService: GsapAnimationService,
+              public snackbar: MatSnackBar) {
     this.globals = new global.Globals(breakpointObserver);
 
-    $('#hostContent').hide();
     let self = this;
+    this.discovery = new Discovery({
+      onConnected(): void {
+        const snackBarRef = snackbar.openFromComponent(SocketConnectSnackbar, {
+          duration: 5000,
+          data: "Connected",
+          panelClass: ['snackbar-default']
+        });
+      },
 
-    this.peerDiscovery = new PeerDiscovery({
-      onUpdate(peerList: Array<Host>): void {
+      onDisconnected(wasConnected: boolean): void {
+        if (wasConnected) {
+          const snackBarRef = snackbar.openFromComponent(SocketConnectSnackbar, {
+            duration: 5000,
+            data: "Disconnected",
+            panelClass: ['snackbar-default']
+          });
+        }
+      },
+
+      onHostUpdate(peerList: Array<Host>): void {
         self.peerList = peerList;
         self.updateHostContent();
-        console.log(peerList);
       }
-    })
+    });
+
+    $('#hostContent').hide();
   }
 
   ngOnInit() { }
@@ -48,11 +70,11 @@ export class MainSiteComponent implements OnInit {
     this.searching = !this.searching;
 
     if (this.searching) {
-      this.peerDiscovery.connect();
+      this.discovery.connect();
       this.animateAllCircles();
     } else {
       this.stopAllCircles();
-      this.peerDiscovery.disconnect();
+      this.discovery.disconnect();
     }
   }
 
@@ -71,26 +93,37 @@ export class MainSiteComponent implements OnInit {
     this.peerColumn = [];
     this.peerMapping = [];
 
-    if (this.peerList.length % 3 === 0) {
-      this.peerList.forEach((value, index) => {
-        this.peerColumn.push(this.col3ClassList);
-      });
-    } else if (this.peerList.length % 3 === 2) {
-      this.peerList.forEach((value, index) => {
-        if (index < this.peerList.length - 2) {
-          this.peerColumn.push(this.col3ClassList);
-        } else {
-          this.peerColumn.push(this.col2ClassList);
-        }
-      });
+    if (this.peerList.length === 3) {
+      this.peerColumn.push(this.col2ClassList);
+      this.peerColumn.push(this.col2ClassList);
+      this.peerColumn.push(this.col1ClassList);
+    } else if (this.peerList.length === 4) {
+      this.peerColumn.push(this.col2ClassList);
+      this.peerColumn.push(this.col2ClassList);
+      this.peerColumn.push(this.col2ClassList);
+      this.peerColumn.push(this.col2ClassList);
     } else {
-      this.peerList.forEach((value, index) => {
-        if (index < this.peerList.length - 1) {
+      if (this.peerList.length % 3 === 0) {
+        this.peerList.forEach((value, index) => {
           this.peerColumn.push(this.col3ClassList);
-        } else {
-          this.peerColumn.push(this.col1ClassList);
-        }
-      })
+        });
+      } else if (this.peerList.length % 3 === 2) {
+        this.peerList.forEach((value, index) => {
+          if (index < this.peerList.length - 2) {
+            this.peerColumn.push(this.col3ClassList);
+          } else {
+            this.peerColumn.push(this.col2ClassList);
+          }
+        });
+      } else {
+        this.peerList.forEach((value, index) => {
+          if (index < this.peerList.length - 1) {
+            this.peerColumn.push(this.col3ClassList);
+          } else {
+            this.peerColumn.push(this.col1ClassList);
+          }
+        })
+      }
     }
 
     for (let i = 0; i < this.peerList.length; i++) {

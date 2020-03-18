@@ -1,36 +1,22 @@
 import { UAParser } from "ua-parser-js";
-import * as WebSocket from 'ws';
+import { uuid } from 'uuidv4';
 
 export class Peer {
 
-    private readonly socket: WebSocket;
     private data: {
         model: string,
         os: string,
         browser: string,
-        type: number,
-        ip: string
+        type: number
     };
+    private rtcSupported: boolean;
     private id: string;
     private ip: string;
-    private readonly rtcSupported: boolean = false;
 
-    public timerId;
-    public lastBeat: number;
-
-    constructor(socket: WebSocket, request) {
-        this.socket = socket;
+    constructor(request) {
         this.setIP(request)
-        this.setId(request);
-        this.rtcSupported = request.url.indexOf('webrtc') > -1;
+        this.setId();
         this.setName(request);
-
-        this.timerId = 0;
-        this.lastBeat = Date.now();
-    }
-
-    public getSocket(): WebSocket {
-        return this.socket;
     }
 
     setIP(request): void {
@@ -40,21 +26,27 @@ export class Peer {
             this.ip = request.connection.remoteAddress;
         }
 
-        if (this.ip == '::1' || this.ip == '::ffff:127.0.0.1') {
+        if (this.ip.startsWith('::1')) {
+            this.ip = this.cutIP('::1');
+        } else if (this.ip.startsWith('::ffff:')) {
+            this.ip = this.cutIP('::ffff:');
+        }
+
+        if (this.ip === null || this.ip === '') {
             this.ip = '127.0.0.1';
         }
+    }
+
+    private cutIP(param: string): string {
+        return this.ip.substring(this.ip.indexOf(param) + param.length +1);
     }
 
     getIP(): string {
         return this.ip;
     }
 
-    setId(request): void {
-        if (request.peerId) {
-            this.id = request.peerId;
-        } else {
-            this.id = request.headers.cookie.replace('peerid=', '');
-        }
+    setId(): void {
+        this.id = uuid();
     }
 
     getId(): string {
@@ -68,7 +60,6 @@ export class Peer {
             os: ua.getOS().name,
             browser: ua.getBrowser().name,
             type: this.getType(ua.getDevice().type),
-            ip: this.ip
         }
     }
 
@@ -82,14 +73,6 @@ export class Peer {
                 return 3;
             default:
                 return 4;
-        }
-    }
-
-    getInfo(): {} {
-        return {
-            id: this.id,
-            data: this.data,
-            rtcSupported: this.rtcSupported
         }
     }
 }

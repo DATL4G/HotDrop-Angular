@@ -1,41 +1,32 @@
 import {HostData} from "./HostData";
-import {Peer} from "./Peer";
+import {Discovery} from "./Discovery";
 
 export class Host {
   private data: HostData
   private id: string;
-  private peer: Peer;
+  private ip: string;
 
-  public applyFromMessage(message, dataIsRoot: boolean = false): void {
-    if (dataIsRoot) {
-      let dataModel;
-      (message.model) ? dataModel = message.model : dataModel = null;
-
-      this.data =  {
-        browser: message.browser,
-        ip: message.ip,
-        model: dataModel,
-        os: message.os,
-        type: message.type
-      }
-    } else {
+  public applyFromMessage(message): void {
       this.id = message.id;
+      this.ip = message.ip;
 
       let dataModel;
       (message.data.model) ? dataModel = message.data.model : dataModel = null;
 
       this.data =  {
         browser: message.data.browser,
-        ip: message.data.ip,
         model: dataModel,
         os: message.data.os,
         type: message.data.type
       }
-    }
   }
 
   public setId(id: string): void {
     this.id = id;
+  }
+
+  public setIP(ip: string): void {
+    this.ip = ip;
   }
 
   public setData(data: HostData): void {
@@ -50,15 +41,24 @@ export class Host {
     return this.data;
   }
 
-  public setPeer(peer: Peer) {
-    this.peer = peer;
+  public toServerData(): any {
+    return {
+      ip: this.ip,
+      id: this.id
+    };
   }
 
-  public getPeer(): Peer {
-    return this.peer;
-  }
-
-  public send(byteArray: ArrayBuffer): void {
-    this.peer.send(byteArray);
+  public send(byteArray: ArrayBuffer, discovery: Discovery): void {
+    discovery.privateConnection(this.toServerData());
+    console.log({
+      data: byteArray,
+      ip: this.ip,
+      id: this.id
+    });
+    setTimeout(() => discovery.send('peer-message', {
+      data: byteArray,
+      ip: this.ip,
+      id: this.id
+    }), 5000);
   }
 }

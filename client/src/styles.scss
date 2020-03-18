@@ -1,4 +1,5 @@
-@import 'assets/scss/theme.scss';
+@import 'assets/scss/theme';
+@import 'assets/scss/variables';
 @import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
 
 * {
@@ -19,6 +20,7 @@ html, body {
   min-width: 300px;
   margin: 0;
   padding: 0;
+  background-color: #ffffff;
 }
 
 body {
@@ -31,6 +33,11 @@ body {
 
 .flex-box {
   display: flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -ms-flexbox;
+  display: -o-flex;
+  display: -webkit-flex;
 }
 
 .max-size {
@@ -50,4 +57,8 @@ body {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+.snackbar-default {
+  background-color: #323232;
 }
