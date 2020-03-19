@@ -43,7 +43,7 @@ export class RTCPeer extends Peer {
     console.log('RTC channel opened with ', this.id);
 
     const channel = event.channel || event.target;
-    channel.onmessage = e => this.onMessage(e.data);
+    channel.onmessage = e => this.onMessage(e);
     channel.onclose = e => this.onChannelClosed();
     this.channel = channel;
   }
