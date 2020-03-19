@@ -49,7 +49,7 @@ export class Host {
   }
 
   public send(byteArray: ArrayBuffer, discovery: Discovery): void {
-    discovery.privateConnection(this.toServerData());
+    //discovery.privateConnection(this.toServerData());
     console.log({
       data: byteArray,
       ip: this.ip,

@@ -1,9 +1,7 @@
-import * as SocketIO from 'socket.io-client';
-import * as P2P from 'socket.io-p2p';
 import {environment} from "../../environments/environment";
-import {P2POptions} from "socket.io-p2p";
 import {Host} from "./Host";
 import {DiscoveryInterface} from "./DiscoveryInterface";
+import isRTCSupported from 'webrtcsupported';
 const ab2str = require('arraybuffer-to-string');
 
 export class Discovery {
@@ -11,60 +9,47 @@ export class Discovery {
   private readonly callback: DiscoveryInterface;
   private peerList: Array<Host> = [];
   private connectionEstablished: boolean = false;
-
-  private socket = SocketIO(environment.protocol + '://' + 'localhost:3241', {
-    forceNew: true,
-    reconnection: false,
-    upgrade: true,
-    autoConnect: false,
-    secure: true
-  });
-
-  private opts: P2POptions = { autoUpgrade: false, numClients: 15 };
-
-  private p2pSocket = new P2P(this.socket, this.opts, () => {
-    this.connectionEstablished = true;
-    this.callback.onConnected();
-  });
+  private websocket: WebSocket;
 
   constructor(callback: DiscoveryInterface) {
     this.callback = callback;
+  }
 
-    this.p2pSocket.on('host-update', (data) => this.onPeers(data));
+  private onMessage(message): void {
+    const msg = JSON.parse(message);
+    console.log(message);
+    switch (msg.type) {
+      case 'host-update':
+        this.onPeers(msg.data);
+        break;
+    }
+  }
 
-    this.p2pSocket.on('establish-webrtc', () => {
-      console.warn('getting dark');
-      this.setPrivate();
-    });
-
-    this.p2pSocket.on('demolish-webrtc', () => {
-      console.warn('getting light');
-      this.setPublic();
-    });
-
-    this.p2pSocket.on('peer-message', (data) => {
-      console.warn(ab2str(data));
-      this.publicConnection(data);
-    });
-
-    this.p2pSocket.on('upgrade', (data) => {
-      console.error('upgrade');
-      console.log(data);
-    });
-
-    this.p2pSocket.on('peer-error', (data) => {
-      console.log('peer-error');
-      console.log(data);
-    })
+  private serverURI(): string {
+    let support = '/fallback';
+    if (isRTCSupported()) {
+      support = '/webrtc';
+    }
+    return environment.websocketProtocol + '://' + environment.serverUri + '/server' + support;
   }
 
   public connect(): void {
-    this.socket.connect();
+    if (this.isConnected() || this.isConnecting()) return;
+
+    this.websocket = new WebSocket(this.serverURI());
+    this.websocket.binaryType = 'arraybuffer';
+    this.websocket.onopen = e => this.callback.onConnected();
+    this.websocket.onmessage = e => this.onMessage(e.data);
+    this.websocket.onclose = e => this.disconnect();
   }
 
   public disconnect(): void {
-    this.p2pSocket.disconnect();
-    this.socket.disconnect();
+    if (this.isConnected() || this.isConnecting()) {
+      this.websocket.send(JSON.stringify({ type: 'disconnect' }));
+    }
+    this.websocket.onclose = null;
+    this.websocket.close();
+    this.websocket = null;
     this.callback.onDisconnected(this.connectionEstablished);
     this.connectionEstablished = false;
   }
@@ -79,33 +64,19 @@ export class Discovery {
     this.callback.onHostUpdate(this.peerList);
   }
 
-  public privateConnection(host: any): void {
-    this.p2pSocket.emit('establish-webrtc', host);
-    console.warn('going dark');
-    this.setPrivate();
+  private isConnected(): boolean {
+    return this.websocket && this.websocket.readyState === this.websocket.OPEN;
   }
 
-  public publicConnection(host: any): void {
-    this.p2pSocket.emit('demolish-webrtc', host);
-    console.warn('going light');
-    this.setPublic();
-  }
-
-  private setPrivate(): void {
-    this.p2pSocket.useSockets = false;
-    this.p2pSocket.usePeerConnection = true;
-    this.p2pSocket.upgrade();
-  }
-
-  private setPublic(): void {
-    this.p2pSocket.useSockets = true;
-    this.p2pSocket.usePeerConnection = false;
-    this.p2pSocket.upgrade();
+  private isConnecting(): boolean {
+    return this.websocket && this.websocket.readyState === this.websocket.CONNECTING;
   }
 
   public send(key: string, data: any) {
-    this.p2pSocket.emit(key, data);
-    console.log('sent');
+    this.websocket.send(JSON.stringify({
+      type: key,
+      data: data
+    }));
   }
 
 }

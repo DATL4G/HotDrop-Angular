@@ -1,82 +1,71 @@
-import { createServer } from 'http';
-import * as SocketIO from 'socket.io';
-import * as P2P from 'socket.io-p2p-server';
-import { Socket } from "socket.io";
+import * as WebSocket from 'ws';
 import {Peer} from "./Peer";
 
-const server = createServer();
-let p2pServer = P2P.Server;
-const io = SocketIO(server, {
-    handlePreflightRequest: (req, res) => {
-        const headers = {
-            "Access-Control-Allow-Headers": "Content-Type, Authorization",
-            "Access-Control-Allow-Origin": req.headers.origin,
-            "Access-Control-Allow-Credentials": true
-        };
-        res.writeHead(200, headers);
-        res.end();
+export class HotDropServer {
+
+    private websocketServer: WebSocket.Server;
+    private socketList: Array<WebSocket> = [];
+    private peerList: Array<Peer> = [];
+
+    constructor(port: number = 3241) {
+        this.websocketServer = new WebSocket.Server({ port: port });
+        this.websocketServer.on('connection', (socket, request) => this.onConnect(socket, request));
     }
-});
 
-server.listen(3241, function () {
-    console.log('Listening on 3241');
-});
-io.use(p2pServer);
+    private onConnect(socket: WebSocket, request: any): void {
+        this.socketList.push(socket);
+        this.peerList.push(new Peer(request));
+        this.hostUpdate();
 
-
-const socketList: Array<Socket> = [];
-const peerList: Array<Peer> = [];
-const clients = [];
-
-io.on('connection', function (socket: Socket, request) {
-    socketList.push(socket);
-    if (request !== undefined && request !== null) {
-        peerList.push(new Peer(request));
-    } else {
-        peerList.push(new Peer(socket.request));
+        socket.on('close', () => this.onDisconnect(socket));
+        socket.on('message', (message) => this.onMessage(socket, message));
     }
-    hostUpdate();
-    clients[socket.id] = socket
-    socket.join('room');
-    p2pServer(socket, null, 'room');
 
-    socket.on('disconnect', function () {
-        const splicePos = socketList.indexOf(socket);
-        socketList.splice(splicePos, 1);
-        peerList.splice(splicePos, 1);
+    private onDisconnect(socket: WebSocket): void {
+        const splicePos = this.socketList.indexOf(socket);
+        this.socketList.splice(splicePos, 1);
+        this.peerList.splice(splicePos, 1);
+        return this.hostUpdate();
+    }
 
-        hostUpdate();
-    })
+    private onMessage(sender, message): void {
+        let msg = message;
+        try {
+            msg = JSON.parse(message);
+        } catch (ignored) { }
 
-    socket.on('establish-webrtc', function (data) {
-        peerList.forEach((value, index) => {
-            if (value.getIP() === data.ip && value.getId() === data.id) {
-                socketList[index].emit('establish-webrtc', data);
-            }
+        switch (msg.type) {
+            case 'disconnect':
+                this.onDisconnect(sender);
+                break;
+            case 'host-request':
+                this.hostRequest(sender);
+                break;
+        }
+    }
+
+    private hostUpdate(): void {
+        this.socketList.forEach((value, index) => {
+            value.send(JSON.stringify({
+                type: 'host-update',
+                data: this.filteredPeerList(value)
+            }));
         });
-    });
+    }
 
-    socket.on('peer-message', function (data) {
-        console.log('sending data...');
-        console.log(data);
-        peerList.forEach((value, index) => {
-            if (value.getIP() === data.ip && value.getId() === data.id) {
-                console.log('found host, emitting...');
-                socketList[index].emit('peer-message', data);
-            }
-        })
-    });
-});
+    private hostRequest(sender): void {
+        sender.send(JSON.stringify({
+            type: 'host-update',
+            data: this.filteredPeerList(sender)
+        }));
+    }
 
-function hostUpdate(): void {
-    socketList.forEach((value, index) => {
-        value.emit('host-update', filteredPeerList(value));
-    });
+    private filteredPeerList(socket: WebSocket): Array<Peer> {
+        const clone: Array<Peer> = Object.assign([], this.peerList);
+        const splicePos = this.socketList.indexOf(socket);
+        clone.splice(splicePos, 1);
+        return clone;
+    }
 }
 
-function filteredPeerList(socket: Socket): Array<Peer> {
-    const clone: Array<Peer> = Object.assign([], peerList);
-    const splicePos = socketList.indexOf(socket);
-    clone.splice(splicePos, 1);
-    return clone;
-}
+const server = new HotDropServer(3241);

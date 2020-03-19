@@ -17,6 +17,7 @@ export class Peer {
         this.setIP(request)
         this.setId();
         this.setName(request);
+        this.rtcSupported = request.url.indexOf('webrtc') > -1;
     }
 
     setIP(request): void {

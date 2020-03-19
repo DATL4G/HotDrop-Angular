@@ -1,6 +1,7 @@
 export const environment = {
   production: true,
   protocol: 'https',
+  websocketProtocol: 'wss',
   serverUri: 'hotdrop.interapps.de',
   rtcConfig: {
     iceServers: [{
