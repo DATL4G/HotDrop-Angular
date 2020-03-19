@@ -11,14 +11,14 @@ const str2ab = require('string-to-arraybuffer')
 export class HostComponent implements OnInit {
 
   @Input() peerData: Host;
-  @Input() discovery: Discovery;
   constructor() { }
 
   ngOnInit(): void { }
 
   public sendData(): void {
     console.log('sending data');
-    this.peerData.send(str2ab('Test'), this.discovery);
+    this.peerData.send(str2ab('Test'));
+    //this.peerData.sendText('any text example');
   }
 
   public getHostName(): string {

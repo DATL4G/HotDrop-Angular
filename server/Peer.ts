@@ -12,6 +12,7 @@ export class Peer {
     private rtcSupported: boolean;
     private id: string;
     private ip: string;
+    private lastPing: number;
 
     constructor(request) {
         this.setIP(request)
@@ -52,6 +53,14 @@ export class Peer {
 
     getId(): string {
         return this.id;
+    }
+
+    getLastPing(): number {
+        return this.lastPing;
+    }
+
+    setLastPing(lastPing: number): void {
+        this.lastPing = lastPing;
     }
 
     setName(request: Request): void {

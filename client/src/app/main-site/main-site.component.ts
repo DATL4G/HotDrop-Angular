@@ -47,6 +47,7 @@ export class MainSiteComponent implements OnInit {
 
       onDisconnected(wasConnected: boolean): void {
         if (wasConnected) {
+          self.stopAllCircles();
           const snackBarRef = snackbar.openFromComponent(SocketConnectSnackbar, {
             duration: 5000,
             data: "Disconnected",

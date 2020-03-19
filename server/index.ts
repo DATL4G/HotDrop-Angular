@@ -19,6 +19,8 @@ export class HotDropServer {
 
         socket.on('close', () => this.onDisconnect(socket));
         socket.on('message', (message) => this.onMessage(socket, message));
+
+        setInterval(() => this.checkStillAlive(), 500);
     }
 
     private onDisconnect(socket: WebSocket): void {
@@ -41,7 +43,49 @@ export class HotDropServer {
             case 'host-request':
                 this.hostRequest(sender);
                 break;
+            case 'text':
+                this.forwardText(message, msg.data.to);
+                break;
+            case 'ping':
+                this.setLastPing(sender);
+                break;
+            case 'signal':
+                this.forwardSignal(sender, msg, msg.data.to);
+                break;
         }
+    }
+
+    private setLastPing(socket): void {
+        const peerPos = this.socketList.indexOf(socket);
+        this.peerList[peerPos].setLastPing(Date.now())
+    }
+
+    private checkStillAlive(): void {
+        const currentDate = Date.now();
+
+        this.peerList.forEach((value, index) => {
+            if (currentDate - value.getLastPing() > 2000) {
+                this.socketList[index].send(JSON.stringify({ type: 'disconnect' }));
+                this.onDisconnect(this.socketList[index]);
+            }
+        });
+    }
+
+    private forwardSignal(sender, message, id): void {
+        this.socketList.forEach((value, index) => {
+            if (this.peerList[index].getId() === id) {
+                message.data.from = this.peerList[this.socketList.indexOf(sender)].getId();
+                value.send(JSON.stringify(message));
+            }
+        });
+    }
+
+    private forwardText(message, id): void {
+        this.socketList.forEach((value, index) => {
+            if (this.peerList[index].getId() === id) {
+                value.send(message);
+            }
+        });
     }
 
     private hostUpdate(): void {
