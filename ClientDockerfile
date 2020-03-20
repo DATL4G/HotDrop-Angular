@@ -7,4 +7,4 @@ RUN mkdir /usr/share/nginx/build
 COPY ./client/ /usr/share/nginx/build
 WORKDIR /usr/share/nginx/build
 RUN yarn install
-RUN yarn run build --output-path=/usr/share/nginx/html
+RUN yarn run build:prod --output-path=/usr/share/nginx/html
