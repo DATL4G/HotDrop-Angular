@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
-    "@types/node": "^13.9.1",
+    "@types/node": "^13.9.2",
     "@types/ua-parser-js": "^0.7.33",
     "@types/uuidv4": "^5.0.0",
     "@types/ws": "^7.2.3",
