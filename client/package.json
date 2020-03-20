@@ -39,7 +39,7 @@
     "gsap": "^3.2.4",
     "iblock-ublock": "^1.0.3",
     "jquery": "^3.4.1",
-    "ngx-device-detector": "^1.4.0",
+    "ngx-device-detector": "^1.4.1",
     "nosleep.js": "^0.9.0",
     "patreon": "^0.4.1",
     "rxjs": "^6.5.4",
