@@ -27,7 +27,7 @@
     "@angular/platform-browser-dynamic": "^9.0.7",
     "@angular/router": "^9.0.7",
     "@fortawesome/fontawesome-free": "^5.12.1",
-    "@ng-bootstrap/ng-bootstrap": "^6.0.0",
+    "@ng-bootstrap/ng-bootstrap": "^6.0.1",
     "@types/gsap": "^1.20.2",
     "@types/jquery": "^3.3.33",
     "@types/uuidv4": "^5.0.0",
