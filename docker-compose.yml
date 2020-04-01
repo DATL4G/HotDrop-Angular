@@ -5,6 +5,8 @@ services:
       context: server
       dockerfile: Dockerfile
     restart: on-failure
+    ports:
+      - "3241:3241"
   coturn:
     image: instrumentisto/coturn
     restart: on-failure
