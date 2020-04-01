@@ -6,13 +6,14 @@
   "manifest_version": 2,
   "browser_action": {
     "default_popup": "index.html",
-    "default_icon": "assets/images/icon128.png"
+    "default_icon": "assets/icons/icon_128_rounded.png"
   },
   "icons": {
-    "16": "assets/images/icon16.png",
-    "32": "assets/images/icon32.png",
-    "48": "assets/images/icon48.png",
-    "64": "assets/images/icon64.png",
-    "128": "assets/images/icon128.png"
+    "16": "assets/icons/icon_16_rounded.png",
+    "32": "assets/icons/icon_32_rounded.png",
+    "48": "assets/icons/icon_48_rounded.png",
+    "64": "assets/icons/icon_64_rounded.png",
+    "72": "assets/icons/icon_72_rounded.png",
+    "128": "assets/icons/icon_128_rounded.png"
   }
 }

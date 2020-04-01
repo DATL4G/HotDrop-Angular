@@ -1,6 +1,7 @@
 const {app, BrowserWindow, Menu} = require('electron');
 const url = require("url");
 const path = require("path");
+const os = require("os");
 
 let mainWindow;
 
@@ -9,10 +10,10 @@ function createWindow () {
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      webSecurity: true
     },
-    icon: path.join(__dirname, '/dist/assets/images/ic_launcher_round.png'),
-    backgroundColor: '#ffffff'
+    backgroundColor: '#fafafa'
   });
 
   mainWindow.loadURL(
@@ -31,15 +32,16 @@ function createWindow () {
 
   mainWindow.on('closed', function () {
     mainWindow = null
-  })
+  });
 }
 
-app.on('ready', createWindow);
+app.on('ready', () => createWindow());
 
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit();
 });
 
 app.on('activate', function () {
-  if (mainWindow === null) createWindow()
+  if (mainWindow === null) createWindow();
 });
+

@@ -1,7 +1,9 @@
 {
   "name": "hotdrop",
   "version": "0.0.0",
-  "author": "Jeff Retz (DatLag)",
+  "author": "Jeff Retz (DatLag) <jeff.retz08@gmail.com>",
+  "homepage": "https://github.com/DatL4g/HotDrop-Angular",
+  "description": "Program for file exchange on all platforms",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -10,7 +12,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "start:electron": "ng build && electron ."
+    "start:electron": "ng build && electron .",
+    "postinstall": "electron-builder install-app-deps",
+    "dist:linux": "ng build && electron-builder . --linux"
   },
   "main": "main.js",
   "private": true,
@@ -26,11 +30,9 @@
     "@angular/platform-browser": "^9.0.6",
     "@angular/platform-browser-dynamic": "^9.0.6",
     "@angular/router": "^9.0.6",
+    "@angular/service-worker": "^9.0.6",
     "@fortawesome/fontawesome-free": "^5.12.1",
     "@ng-bootstrap/ng-bootstrap": "^6.0.0",
-    "@types/gsap": "^1.20.2",
-    "@types/jquery": "^3.3.33",
-    "@types/uuidv4": "^5.0.0",
     "arraybuffer-to-string": "^1.0.2",
     "bootstrap": "^4.4.1",
     "buffer": "^5.5.0",
@@ -39,14 +41,12 @@
     "gsap": "^3.2.4",
     "iblock-ublock": "^1.0.3",
     "jquery": "^3.4.1",
-    "ngx-device-detector": "^1.4.0",
     "nosleep.js": "^0.9.0",
     "patreon": "^0.4.1",
     "rxjs": "^6.5.4",
     "string-to-arraybuffer": "^1.0.2",
     "tslib": "^1.11.1",
     "tslint": "^6.1.0",
-    "uuidv4": "^6.0.6",
     "webrtcsupported": "^1.0.1",
     "zone.js": "^0.10.2"
   },
@@ -55,11 +55,14 @@
     "@angular/cli": "^9.0.6",
     "@angular/compiler-cli": "^9.0.6",
     "@angular/language-service": "^9.0.6",
+    "@types/gsap": "^1.20.2",
     "@types/jasmine": "^3.5.9",
     "@types/jasminewd2": "^2.0.8",
+    "@types/jquery": "^3.3.34",
     "@types/node": "^13.9.1",
     "codelyzer": "^5.2.1",
     "electron": "^8.1.1",
+    "electron-builder": "^22.4.1",
     "jasmine-core": "^3.5.0",
     "jasmine-spec-reporter": "^4.2.1",
     "karma": "^4.4.1",
@@ -74,7 +77,30 @@
   "yarn-upgrade-all": {
     "ignore": [
       "@angular",
-      "angular"
+      "angular",
+      "typescript"
     ]
+  },
+  "build": {
+    "appId": "de.datlag.hotdrop",
+    "productName": "HotDrop",
+    "directories": {
+      "output": "release/"
+    },
+    "mac": {
+      "icon": "./src/assets/icons/icon.icns",
+      "category": "public.app-category.utilities",
+      "darkModeSupport": true
+    },
+    "win": {
+      "icon": "./src/assets/icons/icon_512.png"
+    },
+    "linux": {
+      "icon": "./src/assets/icons/icon_512.png",
+      "category": "Utility",
+      "target": [
+        "AppImage"
+      ]
+    }
   }
 }
