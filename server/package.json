@@ -14,5 +14,8 @@
   "devDependencies": {
     "ts-node": "^8.6.2",
     "typescript": "^3.8.3"
+  },
+  "scripts": {
+    "start": "npx ts-node index.ts"
   }
 }

@@ -1,15 +1,11 @@
 version: "3"
 services:
-  hotdrop_server:
+  server:
     build:
-      context: .
+      context: server
       dockerfile: Dockerfile
     restart: on-failure
-    working_dir: /home/node/app
-    command: ash -c "npm install && ts-node index.ts"
-    ports:
-      - "3241:3241"
-  hotdrop_coturn:
+  coturn:
     image: instrumentisto/coturn
     restart: on-failure
     command:
@@ -18,14 +14,12 @@ services:
     volumes:
       - ./coturn/turnserver.conf:/etc/coturn/turnserver.conf:ro
     network_mode: host
-  hotdrop_nginx:
+  client:
     build:
-      context: .
-      dockerfile: ClientDockerfile
+      context: client
+      dockerfile: Dockerfile
     depends_on:
-      - hotdrop_server
-      - hotdrop_coturn
-    volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - server
+      - coturn
     ports:
       - "8080:80"
