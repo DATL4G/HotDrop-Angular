@@ -5,6 +5,7 @@ import isRTCSupported from 'webrtcsupported';
 import * as NoSleep from 'nosleep.js';
 import Timeout = NodeJS.Timeout;
 import {RTCPeer} from "./RTCPeer";
+import {IpcService} from "../ipc-service/ipc.service";
 const ab2str = require('arraybuffer-to-string');
 
 export class Discovery {
@@ -15,9 +16,16 @@ export class Discovery {
   private websocket: WebSocket;
   private interval: Timeout;
   private noSleep = new NoSleep();
+  private peerData = null;
 
-  constructor(callback: DiscoveryInterface) {
+  constructor(ipc: IpcService, callback: DiscoveryInterface) {
     this.callback = callback;
+
+    ipc.on('peer-data', (event, args) => {
+      this.peerData = args;
+    });
+
+    ipc.send('request-peer-data', null);
   }
 
   private onMessage(message): void {
@@ -56,7 +64,12 @@ export class Discovery {
 
     this.websocket = new WebSocket(this.serverURI());
     this.websocket.binaryType = 'arraybuffer';
-    this.websocket.onopen = e => this.callback.onConnected();
+    this.websocket.onopen = e => {
+      this.callback.onConnected();
+      if (this.peerData !== null) {
+        this.send('self-update', this.peerData);
+      }
+    };
     this.websocket.onmessage = e => this.onMessage(e.data);
     this.websocket.onclose = e => this.disconnect();
 
@@ -79,6 +92,9 @@ export class Discovery {
   }
 
   private onPeers(data): void {
+    this.peerList.forEach(value => {
+      value.cancelRtcConnection();
+    });
     this.peerList = [];
     data.forEach((value, index) => {
       const host = new Host(this, isRTCSupported());

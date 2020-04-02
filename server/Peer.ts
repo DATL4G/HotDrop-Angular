@@ -10,14 +10,14 @@ export class Peer {
         type: number
     };
     private rtcSupported: boolean;
-    private id: string;
+    private id: string = null;
     private ip: string;
     private lastPing: number;
 
     constructor(request) {
         this.setIP(request)
         this.setId();
-        this.setName(request);
+        this.parseName(request);
         this.rtcSupported = request.url.indexOf('webrtc') > -1;
     }
 
@@ -47,8 +47,14 @@ export class Peer {
         return this.ip;
     }
 
-    setId(): void {
-        this.id = uuid();
+    setId(id = null): void {
+        if (id === undefined || id === null || id === '') {
+            if (this.id === null) {
+                this.id = uuid();
+            }
+        } else {
+            this.id = id;
+        }
     }
 
     getId(): string {
@@ -63,13 +69,22 @@ export class Peer {
         this.lastPing = lastPing;
     }
 
-    setName(request: Request): void {
+    parseName(request: Request): void {
         const ua = new UAParser(request.headers['user-agent']);
         this.data = {
             model: ua.getDevice().model,
             os: ua.getOS().name,
             browser: ua.getBrowser().name,
             type: this.getType(ua.getDevice().type),
+        }
+    }
+
+    setName(name): void {
+        this.data = {
+            model: name,
+            os: this.data.os,
+            browser: this.data.browser,
+            type: this.data.type
         }
     }
 

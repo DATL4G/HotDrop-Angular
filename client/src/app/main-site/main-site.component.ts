@@ -7,6 +7,7 @@ import * as $ from 'jquery';
 import {Host} from "../p2p/Host";
 import {Discovery} from "../p2p/Discovery";
 import {SocketConnectSnackbar} from "../snackbars/socket-connect/socket-connect-snackbar";
+import {IpcService} from "../ipc-service/ipc.service";
 
 @Component({
   selector: 'app-main-site',
@@ -32,11 +33,11 @@ export class MainSiteComponent implements OnInit {
 
   constructor(private breakpointObserver: BreakpointObserver,
               private gsapAnimationService: GsapAnimationService,
-              public snackbar: MatSnackBar) {
+              public snackbar: MatSnackBar, private readonly ipc: IpcService) {
     this.globals = new global.Globals(breakpointObserver);
 
     let self = this;
-    this.discovery = new Discovery({
+    this.discovery = new Discovery(ipc, {
       onConnected(): void {
         const snackBarRef = snackbar.openFromComponent(SocketConnectSnackbar, {
           duration: 5000,

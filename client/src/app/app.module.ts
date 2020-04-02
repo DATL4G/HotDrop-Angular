@@ -12,11 +12,12 @@ import { MainSiteComponent } from './main-site/main-site.component';
 import { SnackbarComponentsModule } from './snackbars/snackbar-components';
 import { DownloadSiteComponent } from './download-site/download-site.component';
 import { InfoLayoutComponent } from './info-layout/info-layout.component';
-import {GsapAnimationService} from "./animation/gsap-animation.service";
+import { GsapAnimationService } from "./animation/gsap-animation.service";
 import { AdBlockDetector } from './anti-adblock/adblock-detector';
 import { HostComponent } from './host/host.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { IpcService } from "./ipc-service/ipc.service";
 
 @NgModule({
   declarations: [
@@ -37,7 +38,7 @@ import { environment } from '../environments/environment';
     SnackbarComponentsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
-  providers: [GsapAnimationService, AdBlockDetector],
+  providers: [GsapAnimationService, AdBlockDetector, IpcService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

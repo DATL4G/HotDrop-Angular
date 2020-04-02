@@ -9,8 +9,9 @@ export class Host {
   private id: string;
   private ip: string;
   private rtcSupported: boolean;
-  private discovery: Discovery;
+  private readonly discovery: Discovery;
   private peer: Peer;
+  private rtcConnectionTimer: NodeJS.Timeout;
 
   private readonly oppositeSupported: boolean;
 
@@ -34,11 +35,13 @@ export class Host {
         type: message.data.type
       }
 
-      if (this.rtcSupported && this.oppositeSupported) {
-        this.peer = new RTCPeer(this.discovery, this.id);
-      } else {
-        this.peer = new WSPeer(this.discovery, this.id);
-      }
+      this.rtcConnectionTimer = setTimeout(() => {
+        if (this.rtcSupported && this.oppositeSupported) {
+          this.peer = new RTCPeer(this.discovery, this.id);
+        } else {
+          this.peer = new WSPeer(this.discovery, this.id);
+        }
+      }, 1000);
   }
 
   public setId(id: string): void {
@@ -81,5 +84,9 @@ export class Host {
 
   public send(byteArray: ArrayBuffer): void {
     this.peer.send(byteArray);
+  }
+
+  public cancelRtcConnection(): void {
+    clearTimeout(this.rtcConnectionTimer);
   }
 }

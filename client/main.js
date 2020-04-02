@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Menu} = require('electron');
+const {app, BrowserWindow, Menu, ipcMain} = require('electron');
 const url = require("url");
 const path = require("path");
 const os = require("os");
@@ -32,6 +32,10 @@ function createWindow () {
 
   mainWindow.on('closed', function () {
     mainWindow = null
+  });
+
+  ipcMain.on('request-peer-data', () => {
+    mainWindow.webContents.send('peer-data', { id: null, name: os.hostname() });
   });
 }
 

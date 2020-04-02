@@ -2,8 +2,8 @@ FROM node:latest AS builder
 RUN mkdir /build
 COPY . /build
 WORKDIR /build
-RUN npm install
-RUN npm run build:prod
+RUN yarn install
+RUN yarn run build:prod
 
 FROM nginx:latest
 

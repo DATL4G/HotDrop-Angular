@@ -43,6 +43,9 @@ export class HotDropServer {
             case 'host-request':
                 this.hostRequest(sender);
                 break;
+            case 'self-update':
+                this.updatePeerData(sender, msg.data);
+                break;
             case 'text':
                 this.forwardText(message, msg.data.to);
                 break;
@@ -55,9 +58,16 @@ export class HotDropServer {
         }
     }
 
+    private updatePeerData(socket, data): void {
+        const index = this.getSocketIndex(socket);
+        this.peerList[index].setId(data.id);
+        this.peerList[index].setName(data.name);
+
+        this.hostUpdate();
+    }
+
     private setLastPing(socket): void {
-        const peerPos = this.socketList.indexOf(socket);
-        this.peerList[peerPos].setLastPing(Date.now())
+        this.peerList[this.getSocketIndex(socket)].setLastPing(Date.now())
     }
 
     private checkStillAlive(): void {
@@ -74,7 +84,7 @@ export class HotDropServer {
     private forwardSignal(sender, message, id): void {
         this.socketList.forEach((value, index) => {
             if (this.peerList[index].getId() === id) {
-                message.data.from = this.peerList[this.socketList.indexOf(sender)].getId();
+                message.data.from = this.peerList[this.getSocketIndex(sender)].getId();
                 value.send(JSON.stringify(message));
             }
         });
@@ -106,9 +116,12 @@ export class HotDropServer {
 
     private filteredPeerList(socket: WebSocket): Array<Peer> {
         const clone: Array<Peer> = Object.assign([], this.peerList);
-        const splicePos = this.socketList.indexOf(socket);
-        clone.splice(splicePos, 1);
+        clone.splice(this.getSocketIndex(socket), 1);
         return clone;
+    }
+
+    private getSocketIndex(socket): number {
+        return this.socketList.indexOf(socket);
     }
 }
 
