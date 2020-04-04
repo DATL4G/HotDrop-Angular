@@ -100,10 +100,13 @@ export class HotDropServer {
 
     private hostUpdate(): void {
         this.socketList.forEach((value, index) => {
-            value.send(JSON.stringify({
-                type: 'host-update',
-                data: this.filteredPeerList(value)
-            }));
+            const filteredList = this.filteredPeerList(value);
+            if (filteredList.length > 0) {
+                value.send(JSON.stringify({
+                    type: 'host-update',
+                    data: filteredList
+                }));
+            }
         });
     }
 
@@ -117,6 +120,11 @@ export class HotDropServer {
     private filteredPeerList(socket: WebSocket): Array<Peer> {
         const clone: Array<Peer> = Object.assign([], this.peerList);
         clone.splice(this.getSocketIndex(socket), 1);
+        for (let i = clone.length -1; i >= 0; i--) {
+            if (clone[i].getId() === null) {
+                clone.splice(i, 1);
+            }
+        }
         return clone;
     }
 

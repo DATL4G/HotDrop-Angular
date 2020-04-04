@@ -15,8 +15,7 @@ export class Peer {
     private lastPing: number;
 
     constructor(request) {
-        this.setIP(request)
-        this.setId();
+        this.setIP(request);
         this.parseName(request);
         this.rtcSupported = request.url.indexOf('webrtc') > -1;
     }
@@ -57,7 +56,7 @@ export class Peer {
         }
     }
 
-    getId(): string {
+    getId(): string|null {
         return this.id;
     }
 
@@ -79,7 +78,7 @@ export class Peer {
         }
     }
 
-    setName(name): void {
+    setName(name = null): void {
         this.data = {
             model: name,
             os: this.data.os,

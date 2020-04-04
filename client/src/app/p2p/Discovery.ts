@@ -16,7 +16,10 @@ export class Discovery {
   private websocket: WebSocket;
   private interval: Timeout;
   private noSleep = new NoSleep();
-  private peerData = null;
+  private peerData = {
+    id: null,
+    name: null
+  };
 
   constructor(ipc: IpcService, callback: DiscoveryInterface) {
     this.callback = callback;
@@ -66,9 +69,7 @@ export class Discovery {
     this.websocket.binaryType = 'arraybuffer';
     this.websocket.onopen = e => {
       this.callback.onConnected();
-      if (this.peerData !== null) {
-        this.send('self-update', this.peerData);
-      }
+      this.send('self-update', this.peerData);
     };
     this.websocket.onmessage = e => this.onMessage(e.data);
     this.websocket.onclose = e => this.disconnect();
