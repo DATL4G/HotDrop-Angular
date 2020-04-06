@@ -18,7 +18,8 @@ export class Discovery {
   private noSleep = new NoSleep();
   private peerData = {
     id: null,
-    name: null
+    name: null,
+    ready: true
   };
 
   constructor(ipc: IpcService, callback: DiscoveryInterface) {

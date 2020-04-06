@@ -12,10 +12,12 @@ export class Peer {
     private rtcSupported: boolean;
     private id: string = null;
     private ip: string;
+    private ready: boolean = false;
     private lastPing: number;
 
     constructor(request) {
         this.setIP(request);
+        this.setId();
         this.parseName(request);
         this.rtcSupported = request.url.indexOf('webrtc') > -1;
     }
@@ -98,5 +100,13 @@ export class Peer {
             default:
                 return 4;
         }
+    }
+
+    setReady(ready: boolean = false): void {
+        this.ready = ready;
+    }
+
+    isReady(): boolean {
+        return this.ready;
     }
 }

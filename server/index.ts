@@ -62,6 +62,7 @@ export class HotDropServer {
         const index = this.getSocketIndex(socket);
         this.peerList[index].setId(data.id);
         this.peerList[index].setName(data.name);
+        this.peerList[index].setReady(data.ready);
 
         this.hostUpdate();
     }
@@ -121,7 +122,7 @@ export class HotDropServer {
         const clone: Array<Peer> = Object.assign([], this.peerList);
         clone.splice(this.getSocketIndex(socket), 1);
         for (let i = clone.length -1; i >= 0; i--) {
-            if (clone[i].getId() === null) {
+            if (!clone[i].isReady()) {
                 clone.splice(i, 1);
             }
         }

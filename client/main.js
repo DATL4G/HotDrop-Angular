@@ -35,7 +35,7 @@ function createWindow () {
   });
 
   ipcMain.on('request-peer-data', () => {
-    mainWindow.webContents.send('peer-data', { id: null, name: os.hostname() });
+    mainWindow.webContents.send('peer-data', { id: null, name: os.hostname(), ready: true });
   });
 }
 
