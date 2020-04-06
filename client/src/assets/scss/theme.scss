@@ -1,6 +1,11 @@
 @import '~@angular/material/theming';
 @import 'variables';
+@import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
 @include mat-core();
+
+$HotDrop-Poppins: mat-typography-config(
+  $font-family: 'Poppins, "Helvetica Neue", sans-serif'
+);
 
 $HotDrop-primary: (
   50: #ee9ea0,
@@ -38,6 +43,7 @@ $HotDrop-light-accent: mat-palette($mat-red, A200, A100, A400);
 $HotDrop-light-palette: mat-palette($HotDrop-primary, 500, 100, 700);
 $HotDrop-light-theme: mat-light-theme($HotDrop-light-palette, $HotDrop-light-accent);
 @include angular-material-theme($HotDrop-light-theme);
+@include angular-material-typography($HotDrop-Poppins);
 
 
 $HotDrop-dark-accent: mat-palette($mat-red, A400, A100, A700);

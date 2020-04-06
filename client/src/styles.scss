@@ -1,6 +1,5 @@
 @import 'assets/scss/theme';
 @import 'assets/scss/variables';
-@import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
 
 * {
   outline: none !important;
@@ -21,10 +20,6 @@ html, body {
   margin: 0;
   padding: 0;
   background-color: #ffffff;
-}
-
-body {
-  font-family: 'Poppins', "Helvetica Neue", sans-serif;
 }
 
 .spacer {
