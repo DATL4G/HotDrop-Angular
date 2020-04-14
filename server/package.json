@@ -5,7 +5,7 @@
   "dependencies": {
     "@types/node": "^13.11.0",
     "@types/ua-parser-js": "^0.7.33",
-    "@types/ws": "^7.2.3",
+    "@types/ws": "^7.2.4",
     "ua-parser-js": "^0.7.21",
     "uuidv4": "^6.0.7",
     "ws": "^7.2.3"
