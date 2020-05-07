@@ -18,17 +18,13 @@ export class MainSiteComponent implements OnInit {
 
   private searching: boolean = false;
   private peerList: Array<Host> = [];
-  private peerColumn: Array<string> = [];
+  private peerColumn: Array<number> = [];
   public peerMapping: Array<{
     peer: Host,
-    column: string
+    column: number
   }> = [];
   public globals: global.Globals;
   public discovery: Discovery;
-
-  public col1ClassList = 'col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12';
-  public col2ClassList = 'col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6';
-  public col3ClassList = 'col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4';
 
 
   constructor(private breakpointObserver: BreakpointObserver,
@@ -96,33 +92,33 @@ export class MainSiteComponent implements OnInit {
     this.peerMapping = [];
 
     if (this.peerList.length === 3) {
-      this.peerColumn.push(this.col2ClassList);
-      this.peerColumn.push(this.col2ClassList);
-      this.peerColumn.push(this.col1ClassList);
+      this.peerColumn.push(3);
+      this.peerColumn.push(3);
+      this.peerColumn.push(6);
     } else if (this.peerList.length === 4) {
-      this.peerColumn.push(this.col2ClassList);
-      this.peerColumn.push(this.col2ClassList);
-      this.peerColumn.push(this.col2ClassList);
-      this.peerColumn.push(this.col2ClassList);
+      this.peerColumn.push(3);
+      this.peerColumn.push(3);
+      this.peerColumn.push(3);
+      this.peerColumn.push(3);
     } else {
       if (this.peerList.length % 3 === 0) {
         this.peerList.forEach((value, index) => {
-          this.peerColumn.push(this.col3ClassList);
+          this.peerColumn.push(2);
         });
       } else if (this.peerList.length % 3 === 2) {
         this.peerList.forEach((value, index) => {
           if (index < this.peerList.length - 2) {
-            this.peerColumn.push(this.col3ClassList);
+            this.peerColumn.push(2);
           } else {
-            this.peerColumn.push(this.col2ClassList);
+            this.peerColumn.push(3);
           }
         });
       } else {
         this.peerList.forEach((value, index) => {
           if (index < this.peerList.length - 1) {
-            this.peerColumn.push(this.col3ClassList);
+            this.peerColumn.push(2);
           } else {
-            this.peerColumn.push(this.col1ClassList);
+            this.peerColumn.push(6);
           }
         })
       }

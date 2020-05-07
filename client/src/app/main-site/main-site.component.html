@@ -3,13 +3,13 @@
   <button (click)="connect()" mat-fab aria-label="Search FAB" color="primary" id="searchFAB">
     <mat-icon>search</mat-icon>
   </button>
-  <div class="row" id="hostContent" style="display: none;">
-    <div *ngFor="let mapping of peerMapping"
-         [ngClass]="mapping.column"
-         class="flex-box"
-         style="justify-content: center;">
-      <app-host [peerData]="mapping.peer" class="max-width"></app-host>
-    </div>
-  </div>
+  <mat-grid-list [cols]="(globals.isHandset()) ? 6 : 12" rowHeight="100px" id="hostContent" class="max-size" style="display: none;">
+    <mat-grid-tile
+      *ngFor="let mapping of peerMapping"
+      [colspan]="mapping.column"
+      [rowspan]="1">
+      <app-host [peerData]="mapping.peer" class="max-size flex-box" style="align-items: center;"></app-host>
+    </mat-grid-tile>
+  </mat-grid-list>
   <div class="spacer"></div>
 </div>
