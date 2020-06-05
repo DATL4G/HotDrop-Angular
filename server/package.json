@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "ts-node": "^8.10.1",
-    "typescript": "^3.9.2",
+    "typescript": "^3.9.5",
     "yarn-upgrade-all": "^0.5.2"
   },
   "scripts": {
